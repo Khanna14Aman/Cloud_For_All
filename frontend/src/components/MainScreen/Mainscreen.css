@@ -1,0 +1,19 @@
+.mainscreen {
+  min-height: 10vh;
+  display: flex;
+  padding: 10px 0;
+}
+.page {
+  width: 100%;
+}
+.heading {
+  font-size: 60px;
+  padding: 5px 10px;
+}
+@media only screen and (max-width: 600px) {
+  .heading {
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+  }
+}
