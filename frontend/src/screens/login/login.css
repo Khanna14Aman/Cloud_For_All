@@ -1,5 +1,23 @@
 .loginContainer {
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
+  padding: 10px;
+  position: relative;
+  left: 35%;
+  margin-top: 2%;
+  /* top: 25vh; */
+  border-radius: 20px;
+  background-color: gray;
+  width: 30%;
+  height: 60vh;
+  box-shadow: 3px 3px 3px rgb(49, 48, 48);
+  animation-name: login-slider;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+}
+@keyframes login-slider {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: 35%;
+  }
 }

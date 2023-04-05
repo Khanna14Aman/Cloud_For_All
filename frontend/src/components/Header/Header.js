@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  Button,
   Container,
   Form,
   FormControl,
@@ -12,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../../actions/userActions";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header({ setSearch }) {
   const dispatch = useDispatch();
@@ -32,7 +31,7 @@ function Header({ setSearch }) {
     <Navbar bg="primary" expand="lg">
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand>keep your notes</Navbar.Brand>
+          <Navbar.Brand>Cloud_For_All</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -41,20 +40,29 @@ function Header({ setSearch }) {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            {/* <Nav.Link href="/mynotes"> */}
-
+            <LinkContainer to="/about">
+              <Navbar.Brand>About</Navbar.Brand>
+            </LinkContainer>
             {userInfo && (
-              <LinkContainer to="/mynotes">
-                <Navbar.Brand>mynotes</Navbar.Brand>
-              </LinkContainer>
+              <Link to="/contact">
+                <Navbar.Brand>Contact</Navbar.Brand>
+              </Link>
             )}
-
             {userInfo && (
               <NavDropdown
                 title={userInfo && userInfo.name}
                 id="navbarScrollingDropdown"
               >
-                <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to="/mynotes" style={{ textDecoration: "none" }}>
+                    My Notes
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to="/profile" style={{ textDecoration: "none" }}>
+                    My Profile
+                  </Link>
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={logoutHandler}>
                   Logout
                 </NavDropdown.Item>
@@ -70,7 +78,6 @@ function Header({ setSearch }) {
                 aria-label="Search"
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button variant="outline-success">Search</Button>
             </Form>
           )}
         </Navbar.Collapse>

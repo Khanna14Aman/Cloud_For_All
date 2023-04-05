@@ -55,7 +55,7 @@ function Register() {
   const navigate = useNavigate();
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/home");
     }
   }, [navigate, userInfo]);
 

@@ -1,14 +1,15 @@
 .mainscreen {
   min-height: 10vh;
-  display: flex;
-  padding: 10px 0;
+  /* display: flex; */
+  padding: 3vh 0;
+  /* background-color: red; */
 }
 .page {
   width: 100%;
 }
 .heading {
-  font-size: 60px;
-  padding: 5px 10px;
+  font-size: 10vh;
+  padding: 2vh 2vw;
 }
 @media only screen and (max-width: 600px) {
   .heading {

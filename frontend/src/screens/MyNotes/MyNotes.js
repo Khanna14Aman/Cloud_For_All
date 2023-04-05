@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteNoteAction, listNotes } from "../../actions/notesActions";
 import ErrorMessage from "../../components/Error/Error";
 import Loading from "../../components/Loading/Loading";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MyNotes({ search }) {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function MyNotes({ search }) {
 
   const noteList = useSelector((state) => state.noteList);
   const { loading, notes, error } = noteList;
+  // console.log(typeof notes);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -89,7 +90,15 @@ function MyNotes({ search }) {
                   {/* </contextAwareToogle> */}
                 </span>
                 <div>
-                  <Button href={`/note/${note._id}`}>Edit</Button>
+                  <Button>
+                    {" "}
+                    <Link
+                      to={`/note/${note._id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      Edit
+                    </Link>
+                  </Button>
                   <Button
                     variant="danger"
                     className="mx-2"

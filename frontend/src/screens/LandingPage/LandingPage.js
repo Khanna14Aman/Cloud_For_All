@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -11,7 +11,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/mynotes");
+      navigate("/home");
     }
   }, [navigate, userInfo]);
 
@@ -21,24 +21,20 @@ const LandingPage = () => {
         <Row>
           <div className="intro-text">
             <div>
-              <h1 className="title">welcome to keep your notes</h1>
-              <p className="subtitle">keep your notes safe here.</p>
+              <h1 className="title">Welcome to Cloud_For_All</h1>
+              <p className="subtitle">Keep your all data safe here.</p>
             </div>
             <div className="buttonContainer">
-              <a href="/login">
+              <Link to="/login">
                 <Button size="lg" className="landingButton">
                   Login
                 </Button>
-              </a>
-              <a href="/register">
-                <Button
-                  size="lg"
-                  className="landingButton"
-                  variant="outline-primary"
-                >
+              </Link>
+              <Link to="/register">
+                <Button size="lg" className="landingButton">
                   SignUp
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </Row>

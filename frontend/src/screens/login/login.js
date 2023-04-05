@@ -22,7 +22,7 @@ function Login() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/mynotes");
+      navigate("/home");
     }
   }, [navigate, userInfo]);
 
@@ -33,12 +33,16 @@ function Login() {
 
   return (
     <MainScreen title="LOGIN">
-      <div className="loginContainer">
+      <div style={{ maxHeight: "20%" }}>
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
+      </div>
+      <div className="loginContainer">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>
+              <strong>Email address</strong>
+            </Form.Label>
             <Form.Control
               type="email"
               value={email}
@@ -48,7 +52,9 @@ function Login() {
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>
+              <strong>Password</strong>
+            </Form.Label>
             <Form.Control
               type="password"
               value={password}
@@ -57,11 +63,11 @@ function Login() {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" style={{ marginTop: "1vh" }}>
             Submit
           </Button>
         </Form>
-        <Row className="py-3">
+        <Row className="py-3" style={{ position: "absolute", bottom: "0" }}>
           <Col>
             New Customer ? <Link to="/register">Register Here</Link>
           </Col>
