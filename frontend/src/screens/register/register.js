@@ -6,7 +6,8 @@ import ErrorMessage from "../../components/Error/Error";
 import Loading from "../../components/Loading/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { register } from "../../actions/userActions";
-import "./register.css";
+import "../../cssfile/register.css";
+import axios from "axios";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,13 @@ function Register() {
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error, userInfo } = userRegister;
 
+  const preset_key = "Cloud_For_All";
+  const cloud_name = "amankhanna";
   const postDetails = (pics) => {
+    if (!pics) {
+      setPicMessage(null);
+      return;
+    }
     if (
       pics ===
       "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
@@ -33,19 +40,21 @@ function Register() {
     }
     setPicMessage(null);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
-      const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "keep_your_notes");
-      data.append("cloud_name", "amankhanna");
-      fetch("https://api.cloudinary.com/v1_1/amankhanna/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
+      const formData = new FormData();
+      formData.append("file", pics);
+      console.log("1");
+      formData.append("upload_preset", preset_key);
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        )
+        .then((res) => {
+          console.log("success");
+          setPic(res.data.secure_url);
         })
         .catch((err) => {
+          console.log("failure");
           console.log(err);
         });
     } else {

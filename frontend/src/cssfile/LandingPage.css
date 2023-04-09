@@ -2,7 +2,7 @@
   height: 90vh;
   display: flex;
   align-items: center;
-  background-image: url("../../cloudimg2.avif");
+  background-image: url("../cloudimg2.avif");
   /* background-position: center; */
   background-size: cover;
 }

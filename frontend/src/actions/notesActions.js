@@ -32,6 +32,7 @@ export const listNotes = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get("/api/notes", config);
+    // console.log(data);
     dispatch({
       type: NOTES_LIST_SUCCESS,
       payload: data,

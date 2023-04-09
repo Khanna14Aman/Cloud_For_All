@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import "./ProfileScreen.css";
+import "../../cssfile/ProfileScreen.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../../actions/userActions";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/Error/Error";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -16,7 +17,6 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picMessage, setPicMessage] = useState();
   const [message, setMessage] = useState(null);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,6 +24,8 @@ const ProfileScreen = () => {
   const { userInfo } = userLogin;
 
   const userUpdate = useSelector((state) => state.userUpdate);
+  // console.log("hello" + userUpdate);
+  // console.log(userUpdate);
   const { loading, error, success } = userUpdate;
 
   useEffect(() => {
@@ -33,27 +35,39 @@ const ProfileScreen = () => {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPic(userInfo.pic);
-      console.log(userInfo.pic);
+      // console.log(userInfo.pic);
     }
   }, [navigate, userInfo]);
-
+  const preset_key = "Cloud_For_All";
+  const cloud_name = "amankhanna";
   const postDetails = (pics) => {
+    if (!pics) {
+      setPicMessage(null);
+      return;
+    }
+    if (
+      pics ===
+      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+    ) {
+      return setPicMessage("Please Select an Image");
+    }
     setPicMessage(null);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
-      const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "keep_your_notes");
-      data.append("cloud_name", "amankhanna");
-      fetch("https://api.cloudinary.com/v1_1/amankhanna/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-          console.log(pic);
+      const formData = new FormData();
+      formData.append("file", pics);
+      console.log("1");
+      formData.append("upload_preset", preset_key);
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        )
+        .then((res) => {
+          console.log("success");
+          setPic(res.data.secure_url);
         })
         .catch((err) => {
+          console.log("failure");
           console.log(err);
         });
     } else {
@@ -67,7 +81,6 @@ const ProfileScreen = () => {
       setMessage("Password and Confirm password should be same");
     } else {
       setMessage("");
-
       dispatch(updateProfile({ name, email, password, pic }));
     }
   };
