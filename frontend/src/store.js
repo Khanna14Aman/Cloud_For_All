@@ -12,6 +12,14 @@ import {
   noteListReducer,
   noteUpdateReducer,
 } from "./reducers/notesReducers";
+import {
+  getContactList,
+  contactCreate,
+  contactDelete,
+  contactDeleteOne,
+  contactUpdate,
+  contactUpdateOne,
+} from "./reducers/contactReducers";
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -20,6 +28,12 @@ const reducer = combineReducers({
   noteCreate: noteCreateReducer,
   updateNote: noteUpdateReducer,
   noteDelete: noteDeleteReducer,
+  contactList: getContactList,
+  createContact: contactCreate,
+  deleteContact: contactDelete,
+  deleteOneContact: contactDeleteOne,
+  updateContact: contactUpdate,
+  updateOneContact: contactUpdateOne,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

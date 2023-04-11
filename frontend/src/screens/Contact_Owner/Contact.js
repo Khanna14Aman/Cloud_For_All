@@ -14,7 +14,7 @@ const Contact = () => {
   }, [navigate, userInfo]);
   return (
     <div>
-      <MainScreen title="Contact"></MainScreen>
+      <MainScreen title="CONTACT OWNER"></MainScreen>
     </div>
   );
 };

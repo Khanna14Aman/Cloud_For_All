@@ -10,8 +10,9 @@ import SingleNote from "./screens/SingleNote/SingleNote";
 import { useState } from "react";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 import About from "./screens/About/About";
-import Contact from "./screens/Contact/Contact";
+import Contact from "./screens/Contact_Owner/Contact";
 import HomePage from "./screens/HomePage/HomePage";
+import MyContacts from "./screens/MyContacts/MyContacts";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -35,7 +36,8 @@ function App() {
               element={<MyNotes search={search} />}
             ></Route>
             <Route exact path="/about" element={<About />} />
-            <Route exact path="/contact" element={<Contact />} />
+            <Route exact path="/contactowner" element={<Contact />} />
+            <Route exact path="/mycontact" element={<MyContacts />} />
           </Routes>
         </main>
         <Footer />

@@ -44,8 +44,8 @@ function Header({ setSearch }) {
               <Navbar.Brand>About</Navbar.Brand>
             </LinkContainer>
             {userInfo && (
-              <Link to="/contact">
-                <Navbar.Brand>Contact</Navbar.Brand>
+              <Link to="/contactowner">
+                <Navbar.Brand>Contact_Owner</Navbar.Brand>
               </Link>
             )}
             {userInfo && (
@@ -58,6 +58,12 @@ function Header({ setSearch }) {
                     My Notes
                   </Link>
                 </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to="/mycontact" style={{ textDecoration: "none" }}>
+                    My Contacts
+                  </Link>
+                </NavDropdown.Item>
+
                 <NavDropdown.Item>
                   <Link to="/profile" style={{ textDecoration: "none" }}>
                     My Profile

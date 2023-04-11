@@ -54,81 +54,82 @@ function MyNotes({ search }) {
 
   return (
     <>
-      {userInfo && <MainScreen title={userInfo.name} />}
-      <LinkContainer to="createnote">
-        <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
-          Create New Note
-        </Button>
-      </LinkContainer>
-      {errorDelete && (
-        <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-      )}
-      {loadingDelete && <Loading />}
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-      {loading && <Loading />}
-      {notes
-        ?.reverse()
-        .filter((filteredNote) =>
-          filteredNote.title.toLowerCase().includes(search.toLowerCase())
-        )
-        .map((note) => (
-          <Accordion key={note._id} value={note}>
-            <Card style={{ margin: 10 }}>
-              <Card.Header style={{ display: "flex" }}>
-                <span
-                  style={{
-                    color: "black",
-                    textDecoration: "none",
-                    flex: 1,
-                    cursor: "pointer",
-                    alignSelf: "center",
-                    fontSize: 18,
-                  }}
-                >
-                  {/* <contextAwareToogle as={Card.Text} variant="link" eventKey="0"> */}
-                  <Accordion.Header>{note.title}</Accordion.Header>
-                  {/* </contextAwareToogle> */}
-                </span>
-                <div>
-                  <Button>
-                    {" "}
-                    <Link
-                      to={`/note/${note._id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      Edit
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="danger"
-                    className="mx-2"
-                    onClick={() => deleteHandler(note._id)}
+      <MainScreen title={userInfo.name}>
+        <LinkContainer to="createnote">
+          <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
+            Create New Note
+          </Button>
+        </LinkContainer>
+        {errorDelete && (
+          <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
+        )}
+        {loadingDelete && <Loading />}
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {loading && <Loading />}
+        {notes
+          ?.reverse()
+          .filter((filteredNote) =>
+            filteredNote.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((note) => (
+            <Accordion key={note._id} value={note}>
+              <Card style={{ margin: 10 }}>
+                <Card.Header style={{ display: "flex" }}>
+                  <span
+                    style={{
+                      color: "black",
+                      textDecoration: "none",
+                      flex: 1,
+                      cursor: "pointer",
+                      alignSelf: "center",
+                      fontSize: 18,
+                    }}
                   >
-                    Delete
-                  </Button>
-                </div>
-              </Card.Header>
-              {/* <AccordionCollapse eventKey="0"> */}
-              <Accordion.Body>
-                <Card.Body>
-                  <h5>
-                    <Badge variant="success">{note.category}</Badge>
-                  </h5>
-                  <blockquote className="blockquote mb-0">
-                    <p>{note.content}</p>
-                    <footer className="blockquote-footer">
-                      Created On{" "}
-                      <cite title="Source Title">
-                        {note.createdAt.substring(0, 10)}
-                      </cite>
-                    </footer>
-                  </blockquote>
-                </Card.Body>
-              </Accordion.Body>
-              {/* </AccordionCollapse> */}
-            </Card>
-          </Accordion>
-        ))}
+                    {/* <contextAwareToogle as={Card.Text} variant="link" eventKey="0"> */}
+                    <Accordion.Header>{note.title}</Accordion.Header>
+                    {/* </contextAwareToogle> */}
+                  </span>
+                  <div>
+                    <Button>
+                      {" "}
+                      <Link
+                        to={`/note/${note._id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        Edit
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="danger"
+                      className="mx-2"
+                      onClick={() => deleteHandler(note._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </Card.Header>
+                {/* <AccordionCollapse eventKey="0"> */}
+                <Accordion.Body>
+                  <Card.Body>
+                    <h5>
+                      <Badge variant="success">{note.category}</Badge>
+                    </h5>
+                    <blockquote className="blockquote mb-0">
+                      <p>{note.content}</p>
+                      <footer className="blockquote-footer">
+                        Created On{" "}
+                        <cite title="Source Title">
+                          {note.createdAt.substring(0, 10)}
+                        </cite>
+                      </footer>
+                    </blockquote>
+                  </Card.Body>
+                </Accordion.Body>
+                {/* </AccordionCollapse> */}
+              </Card>
+            </Accordion>
+          ))}
+      </MainScreen>
     </>
   );
 }
