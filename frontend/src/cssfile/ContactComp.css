@@ -1,0 +1,7 @@
+.contact-comp-main {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(241, 241, 233);
+  height: 10vh;
+  align-items: center;
+}

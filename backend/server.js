@@ -6,6 +6,7 @@ const connectDB = require("../backend/config/db");
 const userroutes = require("./routes/userroutes");
 const noteRoutes = require("./routes/noteRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const verifyRoutes = require("./routes/verifyRoutes");
 const { errorHandler, notFound } = require("./middleware/errormiddleware");
 
 connectDB();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/users", userroutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/mycontact", contactRoutes);
+app.use("/api/verify", verifyRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

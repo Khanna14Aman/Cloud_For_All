@@ -1,0 +1,28 @@
+.signin {
+  color: black;
+}
+.signup {
+  color: black;
+}
+.forgot-outer-div1 {
+  position: relative;
+  left: 35%;
+  width: 30vw;
+  margin-top: 5px;
+  /* top: 22vh; */
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 3px 3px 3px rgb(49, 48, 48);
+  background-color: gray;
+  animation-name: forgot-slider;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+}
+@keyframes forgot-slider {
+  0% {
+    left: 100vw;
+  }
+  100% {
+    left: 35%;
+  }
+}

@@ -11,6 +11,8 @@ const createContact = asyncHandler(async (req, res) => {
   const name = req.body.name;
   const phonenum = req.body.number;
   if (!phonenum || !name) {
+    console.log("phone" + phonenum);
+    console.log("name" + name);
     res.status(400);
     throw new Error("Please provide full data");
   } else {

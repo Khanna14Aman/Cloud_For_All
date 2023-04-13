@@ -69,12 +69,77 @@ function Register() {
     }
   }, [navigate, userInfo]);
 
+  const [otp, setotp] = useState();
+  const [beforeemail, setbefore] = useState("");
+  const [timesend, settimesend] = useState();
+  const [recievedotp, setrecievedotp] = useState();
+  const [otpsuccess, setotpsuccess] = useState("");
+  const [otperror, setotperror] = useState("");
+
+  const SendOTP = async (e) => {
+    if (!email) {
+      setotperror("Email not filled");
+      setotpsuccess("");
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "/api/verify/verifyotpregister",
+        { email },
+        config
+      );
+      setbefore(email);
+      settimesend(Date.now());
+      setrecievedotp(data.otp);
+      setotperror("");
+      setotpsuccess("OTP sended");
+    } catch (err) {
+      setotpsuccess("");
+      setotperror(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      );
+    }
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
       setMessage("password do not match");
+      setotperror("");
+      setotpsuccess("");
+      return;
+    }
+    if (!recievedotp) {
+      setotperror("Please first verigy OTP");
+      setotpsuccess("");
+      return;
+    }
+    if (recievedotp.toString() !== otp.toString()) {
+      setotperror("OTP Does'nt match");
+      setotpsuccess("");
+      return;
+    }
+    if (email !== beforeemail) {
+      setotperror("We have'nt send OTP to this E-mail");
+      setotpsuccess("");
+      return;
+    }
+    const time = Date.now() - timesend;
+    if (time > 120000) {
+      setotperror("Time Over");
+      setotpsuccess("");
+      return;
     } else {
       dispatch(register(name, email, password, pic));
+      setotperror("");
+      setotpsuccess("");
     }
   };
 
@@ -140,7 +205,32 @@ function Register() {
                   custom
                 />
               </Form.Group>
-              <Button variant="primary" type="submit">
+              {otperror && (
+                <ErrorMessage variant="danger">{otperror}</ErrorMessage>
+              )}
+              {otpsuccess && <ErrorMessage>{otpsuccess}</ErrorMessage>}
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>OTP</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={otp}
+                  required
+                  placeholder="OTP"
+                  onChange={(e) => setotp(e.target.value)}
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                style={{ marginTop: "10px" }}
+                onClick={SendOTP}
+              >
+                Send OTP
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ marginTop: "10px", marginLeft: "10px" }}
+              >
                 Register
               </Button>
             </Form>
@@ -155,9 +245,14 @@ function Register() {
             <img src={pic} alt={name} className="registerPic" />
           </Col>
         </Row>
-        <Row className="py-3">
+        <Row>
           <Col>
             Have an Account ? <Link to="/login">Login</Link>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            Forgot Password ? <Link to="/forgot">Click Here</Link>
           </Col>
         </Row>
       </div>

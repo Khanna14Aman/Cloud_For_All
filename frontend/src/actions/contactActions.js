@@ -54,3 +54,69 @@ export const listContacts = () => async (dispatch, getState) => {
     });
   }
 };
+
+export const createContact =
+  (name, number, state, country, city, designation) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CONTACT_CREATE_REQUEST });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `/api/mycontact/create`,
+        { name, number, state, country, city, designation },
+        config
+      );
+      dispatch({ type: CONTACT_CREATE_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({
+        type: CONTACT_CREATE_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+export const deleteContact = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: CONTACT_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/mycontact/delete/${id}`, config);
+
+    dispatch({
+      type: CONTACT_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: CONTACT_DELETE_FAIL,
+      payload: message,
+    });
+  }
+};

@@ -13,6 +13,7 @@ import About from "./screens/About/About";
 import Contact from "./screens/Contact_Owner/Contact";
 import HomePage from "./screens/HomePage/HomePage";
 import MyContacts from "./screens/MyContacts/MyContacts";
+import Forgot from "./screens/Forgot/Forgot";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -37,7 +38,12 @@ function App() {
             ></Route>
             <Route exact path="/about" element={<About />} />
             <Route exact path="/contactowner" element={<Contact />} />
-            <Route exact path="/mycontact" element={<MyContacts />} />
+            <Route
+              exact
+              path="/mycontact"
+              element={<MyContacts search={search} />}
+            />
+            <Route exact path="/forgot" element={<Forgot />} />
           </Routes>
         </main>
         <Footer />
