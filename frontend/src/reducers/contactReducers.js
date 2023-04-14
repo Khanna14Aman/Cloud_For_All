@@ -17,6 +17,9 @@ import {
   CONTACT_UPDATEONE_REQUEST,
   CONTACT_UPDATEONE_SUCCESS,
   CONTACT_UPDATEONE_FAIL,
+  ONE_CONTACT_REQUEST,
+  ONE_CONTACT_SUCCESS,
+  ONE_CONTACT_FAIL,
 } from "../constants/contactConstants";
 
 export const getContactList = (state = { contact: [] }, action) => {
@@ -91,6 +94,19 @@ export const contactUpdateOne = (state = {}, action) => {
     case CONTACT_UPDATEONE_SUCCESS:
       return { success: true };
     case CONTACT_UPDATEONE_FAIL:
+      return { error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const oneContact = (state = {}, action) => {
+  switch (action.type) {
+    case ONE_CONTACT_REQUEST:
+      return { loading: true };
+    case ONE_CONTACT_SUCCESS:
+      return { oneContact: action.payload };
+    case ONE_CONTACT_FAIL:
       return { error: action.payload };
     default:
       return state;

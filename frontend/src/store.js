@@ -19,6 +19,7 @@ import {
   contactDeleteOne,
   contactUpdate,
   contactUpdateOne,
+  oneContact,
 } from "./reducers/contactReducers";
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -34,6 +35,7 @@ const reducer = combineReducers({
   deleteOneContact: contactDeleteOne,
   updateContact: contactUpdate,
   updateOneContact: contactUpdateOne,
+  getOneContact: oneContact,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

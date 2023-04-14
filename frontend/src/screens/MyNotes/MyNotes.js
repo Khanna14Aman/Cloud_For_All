@@ -63,9 +63,13 @@ function MyNotes({ search }) {
         {errorDelete && (
           <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
         )}
-        {loadingDelete && <Loading />}
+        {/* {loadingDelete && <Loading />} */}
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-        {loading && <Loading />}
+        {loading && (
+          <div style={{ height: "5vh" }}>
+            <Loading />
+          </div>
+        )}
         {notes
           ?.reverse()
           .filter((filteredNote) =>

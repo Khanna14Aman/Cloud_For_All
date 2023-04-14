@@ -14,6 +14,8 @@ import Contact from "./screens/Contact_Owner/Contact";
 import HomePage from "./screens/HomePage/HomePage";
 import MyContacts from "./screens/MyContacts/MyContacts";
 import Forgot from "./screens/Forgot/Forgot";
+import NotFound from "./screens/NOT_FOUND/NotFound";
+import SingleContact from "./screens/SingleContact/SingleContact";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -44,6 +46,8 @@ function App() {
               element={<MyContacts search={search} />}
             />
             <Route exact path="/forgot" element={<Forgot />} />
+            <Route exact path="/mycontact/:id" element={<SingleContact />} />
+            <Route exact path="/*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

@@ -67,16 +67,18 @@ function Login() {
             Submit
           </Button>
         </Form>
-        <Row className="py-3" style={{ position: "absolute", bottom: "4vh" }}>
-          <Col>
-            New Customer ? <Link to="/register">Register Here</Link>
-          </Col>
-        </Row>
-        <Row className="py-3" style={{ position: "absolute", bottom: "0" }}>
-          <Col>
-            Forgot Password ? <Link to="/forgot">Click Here</Link>
-          </Col>
-        </Row>
+        <div style={{ position: "absolute", bottom: "2vh" }}>
+          <Row>
+            <Col>
+              New Customer ? <Link to="/register">Register Here</Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              Forgot Password ? <Link to="/forgot">Click Here</Link>
+            </Col>
+          </Row>
+        </div>
       </div>
     </MainScreen>
   );

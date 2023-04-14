@@ -7,6 +7,16 @@ const getContacts = asyncHandler(async (req, res) => {
   res.json(mycontacts);
 });
 
+const getOneContact = asyncHandler(async (req, res) => {
+  const myonecontact = await MyContact.findById({ _id: req.params.id });
+  if (myonecontact) {
+    res.json(myonecontact);
+  } else {
+    res.status(404);
+    throw new Error("No Contact Found");
+  }
+});
+
 const createContact = asyncHandler(async (req, res) => {
   const name = req.body.name;
   const phonenum = req.body.number;
@@ -103,11 +113,10 @@ const updateDetails = asyncHandler(async (req, res) => {
         }
       }
       ContactDetails.name = req.body.name || ContactDetails.name;
-      ContactDetails.state = req.body.state || ContactDetails.state;
-      ContactDetails.city = req.body.city || ContactDetails.city;
-      ContactDetails.country = req.body.country || ContactDetails.country;
-      ContactDetails.designation =
-        req.body.designation || ContactDetails.designation;
+      ContactDetails.state = req.body.state;
+      ContactDetails.city = req.body.city;
+      ContactDetails.country = req.body.country;
+      ContactDetails.designation = req.body.designation;
       const UpdatedDetails = await ContactDetails.save();
       res.json(UpdatedDetails);
     } else {
@@ -143,6 +152,7 @@ const updateNumber = asyncHandler(async (req, res) => {
 
 module.exports = {
   getContacts,
+  getOneContact,
   createContact,
   deleteOneContact,
   deleteContact,

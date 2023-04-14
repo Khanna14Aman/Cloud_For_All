@@ -1,61 +1,59 @@
 import React, { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import { useDispatch, useSelector } from "react-redux";
-import "../../cssfile/CreateContact.css";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import ErrorMessage from "../Error/Error";
 import Loading from "../Loading/Loading";
-import { createContact } from "../../actions/contactActions";
+import "../../cssfile/UpdateContact.css";
+import { useDispatch, useSelector } from "react-redux";
+import { updateContact } from "../../actions/contactActions";
 
-const CreateContact = ({ setcreate }) => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState();
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [designation, setDesignation] = useState("");
-  const dispatch = useDispatch();
+const UpdateContact = ({
+  setedit,
+  Name,
+  City,
+  State,
+  Country,
+  Designation,
+  id,
+}) => {
   const { contact } = useSelector((state) => state.contactList);
-  const createcontact = useSelector((state) => state.createContact);
-  const { error, success, loading } = createcontact;
+  const updatecontact = useSelector((state) => state.updateContact);
+  const { loading, error, success } = updatecontact;
+  const [name, setName] = useState(Name);
+  const [city, setCity] = useState(City);
+  const [state, setState] = useState(State);
+  const [country, setCountry] = useState(Country);
+  const [designation, setDesignation] = useState(Designation);
+
+  const dispatch = useDispatch();
+
   const submitHandler = (e) => {
     e.preventDefault();
-    let isfound = false;
-    if (contact) {
-      for (let value of contact) {
-        if (value.name.toString() === name.toString()) {
-          isfound = true;
-        }
+    let isallowed = true;
+    for (let value of contact) {
+      if (
+        value.name.toString() === name.toString() &&
+        name.toString() !== Name.toString()
+      ) {
+        isallowed = false;
+        break;
       }
     }
-    if (isfound) {
-      if (
-        window.confirm(
-          "You already have contact on this name do you wanna merge them. Also only number will get added in this case and none of the other details get change."
-        )
-      ) {
-        dispatch(
-          createContact(name, number, state, country, city, designation)
-        );
-        if (!name || !number) {
-          return;
-        } else {
-          setcreate(false);
-        }
-      } else {
-        return;
-      }
+    if (!isallowed) {
+      window.alert(
+        "Already you are using this name.Can't perform this operation"
+      );
+      return;
     } else {
-      dispatch(createContact(name, number, state, country, city, designation));
-      if (!name || !number) {
+      dispatch(updateContact(id, name, country, state, city, designation));
+      if (!name) {
         return;
-      } else {
-        setcreate(false);
       }
+      setedit(false);
     }
   };
+
   return (
-    <div className="create-contact-main">
+    <div className="update-contact-main">
       {loading && <Loading></Loading>}
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       <Form onSubmit={submitHandler}>
@@ -74,26 +72,6 @@ const CreateContact = ({ setcreate }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-              ></Form.Control>
-            </Col>
-          </Row>
-        </Form.Group>
-        <Form.Group controlId="Phonenumber">
-          <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>Phone No:</strong>
-              </Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Control
-                type="tel"
-                placeholder="Enter 10 digit number"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-                required
-                pattern="[0-9]{10}"
               ></Form.Control>
             </Col>
           </Row>
@@ -175,13 +153,13 @@ const CreateContact = ({ setcreate }) => {
         <Row style={{ marginTop: "2vh" }}>
           <Col md={1}></Col>
           <Col md={9}>
-            <Button type="submit">Create Contact</Button>
+            <Button type="submit">Update ContactDetails</Button>
           </Col>
-          <Button onClick={() => setcreate(false)}>close</Button>
+          <Button onClick={() => setedit(false)}>close</Button>
         </Row>
       </Form>
     </div>
   );
 };
 
-export default CreateContact;
+export default UpdateContact;
