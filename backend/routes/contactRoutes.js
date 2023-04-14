@@ -8,6 +8,7 @@ const {
   updateDetails,
   updateNumber,
   getOneContact,
+  addOneContact,
 } = require("../controllers/contactcontrollers");
 const router = express.Router();
 router.route("/").get(protect, getContacts);
@@ -17,4 +18,5 @@ router.route("/delete/:id/:contactid").delete(protect, deleteOneContact);
 router.route("/delete/:id").delete(protect, deleteContact);
 router.route("/update/:id").put(protect, updateDetails);
 router.route("/update/:id/:contactid").put(protect, updateNumber);
+router.route("/addone/:id").post(protect, addOneContact);
 module.exports = router;

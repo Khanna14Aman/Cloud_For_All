@@ -139,26 +139,3 @@ function MyNotes({ search }) {
 }
 
 export default MyNotes;
-
-//  <Card style={{ margin: 10 }}>
-//    <Card.Header style={{ display: "flex" }}>
-//      <span
-//        style={{
-//          color: "black",
-//          textDecoration: "none",
-//          flex: 1,
-//          cursor: "pointer",
-//          alignSelf: "center",
-//          fontSize: 18,
-//        }}
-//      >
-//        {/* title */}
-//      </span>
-//      <div>
-//        <Button>Edit</Button>
-//        <Button variant="danger" className="mx-2">
-//          Delete
-//        </Button>
-//      </div>
-//    </Card.Header>
-//  </Card>;

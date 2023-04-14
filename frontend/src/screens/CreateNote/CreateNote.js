@@ -84,10 +84,19 @@ function CreateNote() {
               />
             </Form.Group>
             {loading && <Loading size={50} />}
-            <Button type="submit" variant="primary">
+            <Button
+              type="submit"
+              variant="primary"
+              style={{ marginTop: "1vh" }}
+            >
               Create Note
             </Button>
-            <Button className="mx-2" onClick={resetHandler} variant="danger">
+            <Button
+              className="mx-2"
+              onClick={resetHandler}
+              variant="danger"
+              style={{ marginTop: "1vh" }}
+            >
               Reset Feilds
             </Button>
           </Form>

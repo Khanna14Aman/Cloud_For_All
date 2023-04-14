@@ -150,6 +150,26 @@ const updateNumber = asyncHandler(async (req, res) => {
   }
 });
 
+const addOneContact = asyncHandler(async (req, res) => {
+  const getdata = await MyContact.findById({ _id: req.params.id });
+  if (getdata && getdata.user.toString() !== req.user._id.toString()) {
+    throw new Error("You are not authorized to do this action");
+  } else {
+    if (getdata) {
+      const phonenum = req.body.number;
+      if (!phonenum) {
+        throw new Error("Please provide phone number");
+      }
+      getdata.phonenumber = getdata.phonenumber.concat({ number: phonenum });
+      const result = await getdata.save();
+      res.json(result);
+    } else {
+      res.status(404);
+      throw new Error("No Contact Found");
+    }
+  }
+});
+
 module.exports = {
   getContacts,
   getOneContact,
@@ -158,4 +178,5 @@ module.exports = {
   deleteContact,
   updateDetails,
   updateNumber,
+  addOneContact,
 };

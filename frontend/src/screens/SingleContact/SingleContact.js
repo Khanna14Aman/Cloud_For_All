@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../../cssfile/SingleContact.css";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import Loading from "../../components/Loading/Loading";
@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteOneContact, getoneContact } from "../../actions/contactActions";
 import ErrorMessage from "../../components/Error/Error";
 import { Button, Col, Row } from "react-bootstrap";
+import UpdateOneContact from "../../components/UpdateOneContact/UpdateOneContact";
+import AddOneNumber from "../../components/AddOneNumber/AddOneNumber";
 
 const SingleContact = () => {
   const ID = useParams();
@@ -14,6 +16,11 @@ const SingleContact = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const [showadd, setadd] = useState(false);
+  const [showedit, setedit] = useState(false);
+  const [prevnumber, setprevnumber] = useState("");
+  const [oneid, setid] = useState("");
 
   const { loading, error, oneContact } = useSelector(
     (state) => state.getOneContact
@@ -33,12 +40,25 @@ const SingleContact = () => {
     success: successDeleteOne,
   } = deleteonecontact;
 
+  const addonecontact = useSelector((state) => state.addOneContact);
+  const {
+    loading: loadingAddOneContact,
+    error: errorAddOneContact,
+    success: successAddOneContact,
+  } = addonecontact;
+
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
     }
     dispatch(getoneContact(ID.id));
-  }, [userInfo, ID.id, successDeleteOne, successUpdateOne]);
+  }, [
+    userInfo,
+    ID.id,
+    successDeleteOne,
+    successUpdateOne,
+    successAddOneContact,
+  ]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure to delete this Contact?")) {
@@ -49,12 +69,27 @@ const SingleContact = () => {
   };
   return (
     <MainScreen title="SingleContact">
-      {(loading || loadingDeleteOne || loadingUpdateOne) && (
+      {showedit && (
+        <UpdateOneContact
+          setedit={setedit}
+          id={ID.id}
+          contactId={oneid}
+          number={prevnumber}
+        />
+      )}
+      {showadd && <AddOneNumber setadd={setadd} id={ID.id} />}
+      {(loading ||
+        loadingDeleteOne ||
+        loadingUpdateOne ||
+        loadingAddOneContact) && (
         <div style={{ height: "20vh" }}>
           <Loading />
         </div>
       )}
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+      {errorAddOneContact && (
+        <ErrorMessage variant="danger">{errorAddOneContact}</ErrorMessage>
+      )}
       {errorDeleteOne && (
         <ErrorMessage variant="danger">{errorDeleteOne}</ErrorMessage>
       )}
@@ -118,6 +153,15 @@ const SingleContact = () => {
           </Col>
         </Row>
       </div>
+      <Button
+        style={{ marginTop: "1vh" }}
+        onClick={() => {
+          setadd(true);
+          setedit(false);
+        }}
+      >
+        Add More Number
+      </Button>
       {oneContact &&
         oneContact.phonenumber.map((value) => (
           <>
@@ -128,11 +172,29 @@ const SingleContact = () => {
                 </span>
               </div>
               <div style={{ marginRight: "2vw" }}>
-                <Button style={{ marginLeft: "2vw" }}>Edit</Button>
+                <Button
+                  style={{ marginLeft: "2vw" }}
+                  onClick={() => {
+                    setadd(false);
+                    if (showedit) {
+                      setedit(false);
+                      setprevnumber("");
+                      setid("");
+                    } else {
+                      setedit(true);
+                      setprevnumber(value.number);
+                      setid(value._id);
+                    }
+                  }}
+                >
+                  Edit
+                </Button>
                 <Button
                   variant="danger"
                   style={{ marginLeft: "2vw" }}
-                  onClick={() => deleteHandler(value._id)}
+                  onClick={() => {
+                    deleteHandler(value._id);
+                  }}
                 >
                   Delete
                 </Button>

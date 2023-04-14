@@ -29,13 +29,13 @@ const MyContacts = ({ search }) => {
   const { error, contact, loading } = useSelector((state) => state.contactList);
   if (contact) {
     contact.sort(function (a, b) {
-      if (a.name > b.name) {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
         return 1;
       }
-      if (a.name < b.name) {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       }
-      if (a.name === b.name) {
+      if (a.name.toLowerCase() === b.name.toLowerCase()) {
         return 0;
       }
     });
@@ -64,6 +64,9 @@ const MyContacts = ({ search }) => {
   const deleteonecontact = useSelector((state) => state.deleteOneContact);
   const { success: successDeleteOne } = deleteonecontact;
 
+  const addonecontact = useSelector((state) => state.addOneContact);
+  const { success: successAddOneContact } = addonecontact;
+
   // console.log(contact);
   useEffect(() => {
     dispatch(listContacts());
@@ -79,6 +82,7 @@ const MyContacts = ({ search }) => {
     successUpdate,
     successDeleteOne,
     successUpdateOne,
+    successAddOneContact,
   ]);
   return (
     <>
@@ -113,7 +117,7 @@ const MyContacts = ({ search }) => {
         >
           Create New Contact
         </Button>
-        {loading && (
+        {(loading || loadingDelete) && (
           <div style={{ height: "5vh" }}>
             <Loading />
           </div>

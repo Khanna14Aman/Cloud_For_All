@@ -1,0 +1,10 @@
+.update-one-contact {
+  width: 50%;
+  position: fixed;
+  background-color: red;
+  z-index: 3;
+  height: 30%;
+  margin-left: 19%;
+  padding-top: 4vh;
+  border-radius: 20px;
+}

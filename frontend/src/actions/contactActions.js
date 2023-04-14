@@ -20,6 +20,9 @@ import {
   ONE_CONTACT_REQUEST,
   ONE_CONTACT_SUCCESS,
   ONE_CONTACT_FAIL,
+  ADD_ONE_CONTACT_REQUEST,
+  ADD_ONE_CONTACT_SUCCESS,
+  ADD_ONE_CONTACT_FAIL,
 } from "../constants/contactConstants";
 
 import axios from "axios";
@@ -192,3 +195,58 @@ export const deleteOneContact =
       dispatch({ type: CONTACT_DELETEONE_FAIL, payload: message });
     }
   };
+
+export const updateOneContact =
+  (number, id, contactId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: CONTACT_UPDATEONE_REQUEST });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/mycontact/update/${id}/${contactId}`,
+        { number },
+        config
+      );
+      dispatch({ type: CONTACT_UPDATEONE_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: CONTACT_UPDATEONE_FAIL, payload: message });
+    }
+  };
+
+export const addOneContact = (number, id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADD_ONE_CONTACT_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.post(
+      `/api/mycontact/addone/${id}`,
+      { number },
+      config
+    );
+    dispatch({ type: ADD_ONE_CONTACT_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ADD_ONE_CONTACT_FAIL, payload: message });
+  }
+};

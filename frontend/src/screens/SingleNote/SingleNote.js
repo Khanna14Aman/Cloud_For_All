@@ -108,13 +108,18 @@ function SingleNote() {
               />
             </Form.Group>
             {loading && <Loading size={50} />}
-            <Button variant="primary" type="submit">
+            <Button
+              variant="primary"
+              type="submit"
+              style={{ marginTop: "1vh" }}
+            >
               Update Note
             </Button>
             <Button
               className="mx-2"
               variant="danger"
               onClick={() => deleteHandler(ID.id)}
+              style={{ marginTop: "1vh" }}
             >
               Delete Note
             </Button>

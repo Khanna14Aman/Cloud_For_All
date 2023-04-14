@@ -20,6 +20,9 @@ import {
   ONE_CONTACT_REQUEST,
   ONE_CONTACT_SUCCESS,
   ONE_CONTACT_FAIL,
+  ADD_ONE_CONTACT_REQUEST,
+  ADD_ONE_CONTACT_SUCCESS,
+  ADD_ONE_CONTACT_FAIL,
 } from "../constants/contactConstants";
 
 export const getContactList = (state = { contact: [] }, action) => {
@@ -107,6 +110,19 @@ export const oneContact = (state = {}, action) => {
     case ONE_CONTACT_SUCCESS:
       return { oneContact: action.payload };
     case ONE_CONTACT_FAIL:
+      return { error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const addOneContact = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_ONE_CONTACT_REQUEST:
+      return { loading: true };
+    case ADD_ONE_CONTACT_SUCCESS:
+      return { success: true };
+    case ADD_ONE_CONTACT_FAIL:
       return { error: action.payload };
     default:
       return state;
