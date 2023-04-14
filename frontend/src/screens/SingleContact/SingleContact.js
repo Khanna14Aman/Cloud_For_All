@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../cssfile/SingleContact.css";
+import CopySvg from "../../components/CopySvg/CopySvg";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import Loading from "../../components/Loading/Loading";
 import { useNavigate, useParams } from "react-router-dom";
@@ -166,10 +167,11 @@ const SingleContact = () => {
         oneContact.phonenumber.map((value) => (
           <>
             <div className="single-contact-comp">
-              <div>
+              <div style={{ display: "flex" }}>
                 <span style={{ marginLeft: "2vw", fontSize: "5vh" }}>
                   <strong>{value.number}</strong>
                 </span>
+                <CopySvg number={value.number} />
               </div>
               <div style={{ marginRight: "2vw" }}>
                 <Button
