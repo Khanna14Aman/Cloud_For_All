@@ -25,11 +25,64 @@ function SingleNote() {
   const noteDelete = useSelector((state) => state.noteDelete);
   const { loading: loadingDelete, error: errorDelete } = noteDelete;
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure?")) {
-      dispatch(deleteNoteAction(id));
-    }
-    navigate("/mynotes");
+  // const deleteHandler = (id) => {
+  //   if (window.confirm("Are you sure?")) {
+  //     dispatch(deleteNoteAction(id));
+  //   }
+  //   navigate("/mynotes");
+  // };
+
+  const [deleteid, setdeleteid] = useState("");
+  const [showDelete, setDelete] = useState(false);
+  const DeleteModal = () => {
+    useEffect(() => {
+      document.body.style.overflowY = "hidden";
+      return () => (document.body.style.overflowY = "scroll");
+    }, []);
+    return (
+      <>
+        <div className="blur-background"></div>
+        <div
+          style={{
+            zIndex: "3",
+            borderRadius: "20px",
+            height: "30%",
+            width: "40%",
+            backgroundColor: "red",
+            position: "fixed",
+            left: "30%",
+            top: "35%",
+            padding: "2vh",
+            textAlign: "center",
+            position: "fixed",
+          }}
+        >
+          <div>
+            <h2>
+              <b>Are You Sure?</b>
+            </h2>
+          </div>
+          <div
+            style={{
+              marginTop: "12vh",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              onClick={() => {
+                dispatch(deleteNoteAction(deleteid));
+                setDelete(false);
+                navigate("/mynotes");
+              }}
+            >
+              Delete
+            </Button>
+            <Button onClick={() => setDelete(false)}>Close</Button>
+          </div>
+        </div>
+      </>
+    );
   };
 
   useEffect(() => {
@@ -59,78 +112,85 @@ function SingleNote() {
   };
 
   return (
-    <MainScreen title="Edit Note">
-      <Card>
-        <Card.Header>Edit your Note</Card.Header>
-        <Card.Body>
-          <Form onSubmit={updateHandler}>
-            {loadingDelete && <Loading />}
-            {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-            {errorDelete && (
-              <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-            )}
-            <Form.Group controlId="title">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="title"
-                placeholder="Enter the title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Group>
+    <>
+      <MainScreen title="Edit Note">
+        {showDelete && <DeleteModal />}
+        <Card>
+          <Card.Header>Edit your Note</Card.Header>
+          <Card.Body>
+            <Form onSubmit={updateHandler}>
+              {loadingDelete && <Loading />}
+              {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+              {errorDelete && (
+                <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
+              )}
+              <Form.Group controlId="title">
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  type="title"
+                  placeholder="Enter the title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </Form.Group>
 
-            <Form.Group controlId="content">
-              <Form.Label>Content</Form.Label>
-              <Form.Control
-                as="textarea"
-                placeholder="Enter the content"
-                rows={4}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </Form.Group>
-            {content && (
-              <Card>
-                <Card.Header>Note Preview</Card.Header>
-                <Card.Body>
-                  <ReactMarkdown>{content}</ReactMarkdown>
-                </Card.Body>
-              </Card>
-            )}
+              <Form.Group controlId="content">
+                <Form.Label>Content</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  placeholder="Enter the content"
+                  rows={4}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              </Form.Group>
+              {content && (
+                <Card>
+                  <Card.Header>Note Preview</Card.Header>
+                  <Card.Body>
+                    <ReactMarkdown>{content}</ReactMarkdown>
+                  </Card.Body>
+                </Card>
+              )}
 
-            <Form.Group controlId="content">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type="content"
-                placeholder="Enter the Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
-            </Form.Group>
-            {loading && <Loading size={50} />}
-            <Button
-              variant="primary"
-              type="submit"
-              style={{ marginTop: "1vh" }}
-            >
-              Update Note
-            </Button>
-            <Button
-              className="mx-2"
-              variant="danger"
-              onClick={() => deleteHandler(ID.id)}
-              style={{ marginTop: "1vh" }}
-            >
-              Delete Note
-            </Button>
-          </Form>
-        </Card.Body>
+              <Form.Group controlId="content">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  type="content"
+                  placeholder="Enter the Category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </Form.Group>
+              {loading && <Loading size={50} />}
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ marginTop: "1vh" }}
+              >
+                Update Note
+              </Button>
+              <Button
+                className="mx-2"
+                variant="danger"
+                onClick={() => {
+                  // deleteHandler(ID.id)
+                  setdeleteid(ID.id);
+                  setDelete(true);
+                }}
+                style={{ marginTop: "1vh" }}
+              >
+                Delete Note
+              </Button>
+            </Form>
+          </Card.Body>
 
-        <Card.Footer className="text-muted">
-          Updated on - {date.substring(0, 10)}
-        </Card.Footer>
-      </Card>
-    </MainScreen>
+          <Card.Footer className="text-muted">
+            Updated on - {date.substring(0, 10)}
+          </Card.Footer>
+        </Card>
+      </MainScreen>
+    </>
   );
 }
 

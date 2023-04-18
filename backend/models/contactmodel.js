@@ -7,7 +7,7 @@ const contactSchema = mongoose.Schema({
   phonenumber: [
     {
       number: {
-        type: Number,
+        type: String,
       },
     },
   ],

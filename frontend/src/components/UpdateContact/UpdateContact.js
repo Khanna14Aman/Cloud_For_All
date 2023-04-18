@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import ErrorMessage from "../Error/Error";
 import Loading from "../Loading/Loading";
@@ -15,6 +15,10 @@ const UpdateContact = ({
   Designation,
   id,
 }) => {
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    return () => (document.body.style.overflowY = "scroll");
+  }, []);
   const { contact } = useSelector((state) => state.contactList);
   const updatecontact = useSelector((state) => state.updateContact);
   const { loading, error, success } = updatecontact;
@@ -53,112 +57,115 @@ const UpdateContact = ({
   };
 
   return (
-    <div className="update-contact-main">
-      {loading && <Loading></Loading>}
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="name">
-          <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>Name:</strong>
-              </Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              ></Form.Control>
-            </Col>
-          </Row>
-        </Form.Group>
-        <Form.Group controlId="Country">
-          <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>Country:</strong>
-              </Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Country Name"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              ></Form.Control>
-            </Col>
-          </Row>
-        </Form.Group>
-        <Form.Group controlId="State">
-          <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>State:</strong>
-              </Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Control
-                type="text"
-                placeholder="Enter State"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              ></Form.Control>
-            </Col>
-          </Row>
-        </Form.Group>
+    <>
+      <div className="blur-background"></div>
+      <div className="update-contact-main">
+        {loading && <Loading></Loading>}
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId="name">
+            <Row style={{ marginTop: "2vh" }}>
+              <Col md={1}></Col>
+              <Col md={2}>
+                <Form.Label>
+                  <strong>Name:</strong>
+                </Form.Label>
+              </Col>
+              <Col md={8}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                ></Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
+          <Form.Group controlId="Country">
+            <Row style={{ marginTop: "2vh" }}>
+              <Col md={1}></Col>
+              <Col md={2}>
+                <Form.Label>
+                  <strong>Country:</strong>
+                </Form.Label>
+              </Col>
+              <Col md={8}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Country Name"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                ></Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
+          <Form.Group controlId="State">
+            <Row style={{ marginTop: "2vh" }}>
+              <Col md={1}></Col>
+              <Col md={2}>
+                <Form.Label>
+                  <strong>State:</strong>
+                </Form.Label>
+              </Col>
+              <Col md={8}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter State"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                ></Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
 
-        <Form.Group controlId="City">
-          <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>City:</strong>
-              </Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Control
-                type="text"
-                placeholder="Enter City"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              ></Form.Control>
-            </Col>
-          </Row>
-        </Form.Group>
+          <Form.Group controlId="City">
+            <Row style={{ marginTop: "2vh" }}>
+              <Col md={1}></Col>
+              <Col md={2}>
+                <Form.Label>
+                  <strong>City:</strong>
+                </Form.Label>
+              </Col>
+              <Col md={8}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                ></Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
 
-        <Form.Group controlId="Designation">
+          <Form.Group controlId="Designation">
+            <Row style={{ marginTop: "2vh" }}>
+              <Col md={1}></Col>
+              <Col md={2}>
+                <Form.Label>
+                  <strong>Designation:</strong>
+                </Form.Label>
+              </Col>
+              <Col md={8}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Designation"
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                ></Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
           <Row style={{ marginTop: "2vh" }}>
             <Col md={1}></Col>
-            <Col md={2}>
-              <Form.Label>
-                <strong>Designation:</strong>
-              </Form.Label>
+            <Col md={9}>
+              <Button type="submit">Update ContactDetails</Button>
             </Col>
-            <Col md={8}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Designation"
-                value={designation}
-                onChange={(e) => setDesignation(e.target.value)}
-              ></Form.Control>
-            </Col>
+            <Button onClick={() => setedit(false)}>close</Button>
           </Row>
-        </Form.Group>
-        <Row style={{ marginTop: "2vh" }}>
-          <Col md={1}></Col>
-          <Col md={9}>
-            <Button type="submit">Update ContactDetails</Button>
-          </Col>
-          <Button onClick={() => setedit(false)}>close</Button>
-        </Row>
-      </Form>
-    </div>
+        </Form>
+      </div>
+    </>
   );
 };
 

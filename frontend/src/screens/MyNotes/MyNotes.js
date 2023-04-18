@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, Badge, Button, Card } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import MainScreen from "../../components/MainScreen/MainScreen";
@@ -32,10 +32,62 @@ function MyNotes({ search }) {
     success: successDelete,
   } = noteDelete;
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure?")) {
-      dispatch(deleteNoteAction(id));
-    }
+  // const deleteHandler = (id) => {
+  //   if (window.confirm("Are you sure?")) {
+  //     dispatch(deleteNoteAction(id));
+  //   }
+  // };
+
+  const [deleteid, setdeleteid] = useState("");
+  const [showDelete, setDelete] = useState(false);
+  const DeleteModal = () => {
+    useEffect(() => {
+      document.body.style.overflowY = "hidden";
+      return () => (document.body.style.overflowY = "scroll");
+    }, []);
+    return (
+      <>
+        <div className="blur-background"></div>
+        <div
+          style={{
+            zIndex: "3",
+            borderRadius: "20px",
+            height: "30%",
+            width: "40%",
+            backgroundColor: "red",
+            position: "fixed",
+            left: "30%",
+            top: "35%",
+            padding: "2vh",
+            textAlign: "center",
+            position: "fixed",
+          }}
+        >
+          <div>
+            <h2>
+              <b>Are You Sure?</b>
+            </h2>
+          </div>
+          <div
+            style={{
+              marginTop: "12vh",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              onClick={() => {
+                dispatch(deleteNoteAction(deleteid));
+                setDelete(false);
+              }}
+            >
+              Delete
+            </Button>
+            <Button onClick={() => setDelete(false)}>Close</Button>
+          </div>
+        </div>
+      </>
+    );
   };
 
   useEffect(() => {
@@ -55,6 +107,7 @@ function MyNotes({ search }) {
   return (
     <>
       <MainScreen title={userInfo.name}>
+        {showDelete && <DeleteModal />}
         <LinkContainer to="createnote">
           <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
             Create New Note
@@ -106,7 +159,10 @@ function MyNotes({ search }) {
                     <Button
                       variant="danger"
                       className="mx-2"
-                      onClick={() => deleteHandler(note._id)}
+                      onClick={() => {
+                        setdeleteid(note._id);
+                        setDelete(true);
+                      }}
                     >
                       Delete
                     </Button>

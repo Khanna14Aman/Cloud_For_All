@@ -40,14 +40,14 @@ function Header({ setSearch }) {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <LinkContainer to="/about">
+            {/* <LinkContainer to="/about">
               <Navbar.Brand>About</Navbar.Brand>
-            </LinkContainer>
-            {userInfo && (
+            </LinkContainer> */}
+            {/* {userInfo && (
               <Link to="/contactowner">
                 <Navbar.Brand>Contact_Owner</Navbar.Brand>
               </Link>
-            )}
+            )} */}
             {userInfo && (
               <NavDropdown
                 title={userInfo && userInfo.name}

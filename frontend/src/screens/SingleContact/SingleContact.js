@@ -61,15 +61,67 @@ const SingleContact = () => {
     successAddOneContact,
   ]);
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure to delete this Contact?")) {
-      dispatch(deleteOneContact(ID.id, id));
-    } else {
-      return;
-    }
+  const [deleteid, setdeleteid] = useState("");
+  const [showDelete, setDelete] = useState(false);
+  const DeleteModal = () => {
+    useEffect(() => {
+      document.body.style.overflowY = "hidden";
+      return () => (document.body.style.overflowY = "scroll");
+    }, []);
+    return (
+      <>
+        <div className="blur-background"></div>
+        <div
+          style={{
+            zIndex: "3",
+            borderRadius: "20px",
+            height: "30%",
+            width: "40%",
+            backgroundColor: "red",
+            position: "fixed",
+            left: "30%",
+            top: "35%",
+            padding: "2vh",
+            textAlign: "center",
+            position: "fixed",
+          }}
+        >
+          <div>
+            <h2>
+              <b>Are You Sure to Delete this number.</b>
+            </h2>
+          </div>
+          <div
+            style={{
+              marginTop: "12vh",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              onClick={() => {
+                dispatch(deleteOneContact(ID.id, deleteid));
+                setDelete(false);
+              }}
+            >
+              Delete
+            </Button>
+            <Button onClick={() => setDelete(false)}>Close</Button>
+          </div>
+        </div>
+      </>
+    );
   };
+  // const deleteHandler = (id) => {
+  //   if (window.confirm("Are you sure to delete this Contact?")) {
+  //     dispatch(deleteOneContact(ID.id, id));
+  //   } else {
+  //     return;
+  //   }
+  // };
   return (
     <MainScreen title="SingleContact">
+      {showDelete && <DeleteModal />}
       {showedit && (
         <UpdateOneContact
           setedit={setedit}
@@ -195,7 +247,9 @@ const SingleContact = () => {
                   variant="danger"
                   style={{ marginLeft: "2vw" }}
                   onClick={() => {
-                    deleteHandler(value._id);
+                    setDelete(true);
+                    setdeleteid(value._id);
+                    // deleteHandler(value._id);
                   }}
                 >
                   Delete

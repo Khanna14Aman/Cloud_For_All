@@ -47,11 +47,11 @@ const MyContacts = ({ search }) => {
     success: successDelete,
   } = deletecontact;
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Do you really want to delete this Contact")) {
-      dispatch(deleteContact(id));
-    }
-  };
+  // const deleteHandler = (id) => {
+  //   if (window.confirm("Do you really want to delete this Contact")) {
+  //     dispatch(deleteContact(id));
+  //   }
+  // };
   const createcontact = useSelector((state) => state.createContact);
   const { success: successCreate } = createcontact;
 
@@ -84,8 +84,61 @@ const MyContacts = ({ search }) => {
     successUpdateOne,
     successAddOneContact,
   ]);
+
+  const [deleteid, setdeleteid] = useState("");
+  const [showDelete, setDelete] = useState(false);
+  const DeleteModal = () => {
+    useEffect(() => {
+      document.body.style.overflowY = "hidden";
+      return () => (document.body.style.overflowY = "scroll");
+    }, []);
+    return (
+      <>
+        <div className="blur-background"></div>
+        <div
+          style={{
+            zIndex: "3",
+            borderRadius: "20px",
+            height: "30%",
+            width: "40%",
+            backgroundColor: "red",
+            position: "fixed",
+            left: "30%",
+            top: "35%",
+            padding: "2vh",
+            textAlign: "center",
+            position: "fixed",
+          }}
+        >
+          <div>
+            <h2>
+              <b>Are You Sure to Delete this number.</b>
+            </h2>
+          </div>
+          <div
+            style={{
+              marginTop: "12vh",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              onClick={() => {
+                dispatch(deleteContact(deleteid));
+                setDelete(false);
+              }}
+            >
+              Delete
+            </Button>
+            <Button onClick={() => setDelete(false)}>Close</Button>
+          </div>
+        </div>
+      </>
+    );
+  };
   return (
     <>
+      {showDelete && <DeleteModal />}
       {showcreate && <CreateContact setcreate={setcreate} />}
       {showedit && (
         <UpdateContact
@@ -158,7 +211,11 @@ const MyContacts = ({ search }) => {
                     <Button
                       variant="danger"
                       style={{ marginLeft: "2vw" }}
-                      onClick={() => deleteHandler(value._id)}
+                      onClick={() => {
+                        // deleteHandler(value._id);
+                        setdeleteid(value._id);
+                        setDelete(true);
+                      }}
                     >
                       Delete
                     </Button>
