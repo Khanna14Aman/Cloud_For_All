@@ -4,13 +4,17 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  USER_LOGIN_NULL,
   USER_REGISTER_FAIL,
   USER_REGISTER_LOGOUT,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_REGISTER_NULL,
   USER_UPDATE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
+  USER_UPDATE_ERR_NULL,
+  USER_UPDATE_SUC_NULL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -40,6 +44,9 @@ export const login = (email, password) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
+    setTimeout(() => {
+      dispatch({ type: USER_LOGIN_NULL });
+    }, 5000);
   }
 };
 
@@ -78,6 +85,9 @@ export const register = (name, email, password, pic) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
+    setTimeout(() => {
+      dispatch({ type: USER_REGISTER_NULL });
+    }, 5000);
   }
 };
 
@@ -103,6 +113,9 @@ export const updateProfile = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
+    setTimeout(() => {
+      dispatch({ type: USER_UPDATE_SUC_NULL, payload: data });
+    }, 5000);
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
@@ -111,5 +124,8 @@ export const updateProfile = (user) => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    setTimeout(() => {
+      dispatch({ type: USER_UPDATE_ERR_NULL });
+    }, 5000);
   }
 };
