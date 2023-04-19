@@ -30,6 +30,53 @@ const UpdateContact = ({
 
   const dispatch = useDispatch();
 
+  const [showalert, setalert] = useState(false);
+  const Alert = () => {
+    // useEffect(() => {
+    //   document.body.style.overflowY = "hidden";
+    //   return () => (document.body.style.overflowY = "scroll");
+    // }, []);
+    return (
+      <>
+        <div className="blur-background"></div>
+        <div
+          style={{
+            zIndex: "37",
+            borderRadius: "20px",
+            height: "40%",
+            width: "50%",
+            backgroundColor: "red",
+            position: "fixed",
+            left: "25%",
+            top: "30%",
+            padding: "2vh",
+            textAlign: "center",
+            position: "fixed",
+          }}
+        >
+          <div>
+            <h2>
+              <b>
+                This name is already in use. We cannot perform this Operation.
+              </b>
+            </h2>
+          </div>
+          <div
+            style={{
+              marginTop: "12vh",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button style={{ width: "5vw" }} onClick={() => setalert(false)}>
+              OK
+            </Button>
+          </div>
+        </div>
+      </>
+    );
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     let isallowed = true;
@@ -43,9 +90,10 @@ const UpdateContact = ({
       }
     }
     if (!isallowed) {
-      window.alert(
-        "Already you are using this name.Can't perform this operation"
-      );
+      // window.alert(
+      //   "Already you are using this name.Can't perform this operation"
+      // );
+      setalert(true);
       return;
     } else {
       dispatch(updateContact(id, name, country, state, city, designation));
@@ -59,6 +107,7 @@ const UpdateContact = ({
   return (
     <>
       <div className="blur-background"></div>
+      {showalert && <Alert />}
       <div className="update-contact-main">
         {loading && <Loading></Loading>}
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
