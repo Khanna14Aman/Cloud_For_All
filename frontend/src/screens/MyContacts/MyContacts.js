@@ -181,8 +181,8 @@ const MyContacts = ({ search }) => {
               value.name.toLowerCase().includes(search.toLowerCase())
             )
             .map((value) => (
-              <>
-                <div className="contact-comp-main">
+              <div key={value._id}>
+                <div className="contact-comp-main" key={value._id}>
                   <div>
                     <span style={{ marginLeft: "2vw", fontSize: "5vh" }}>
                       <strong>{value.name}</strong>
@@ -225,7 +225,7 @@ const MyContacts = ({ search }) => {
                   </div>
                 </div>
                 <hr />
-              </>
+              </div>
             ))}
       </MainScreen>
     </>

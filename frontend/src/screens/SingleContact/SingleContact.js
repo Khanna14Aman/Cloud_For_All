@@ -217,7 +217,7 @@ const SingleContact = () => {
       </Button>
       {oneContact &&
         oneContact.phonenumber.map((value) => (
-          <>
+          <div key={value._id}>
             <div className="single-contact-comp">
               <div style={{ display: "flex" }}>
                 <span style={{ marginLeft: "2vw", fontSize: "5vh" }}>
@@ -257,7 +257,7 @@ const SingleContact = () => {
               </div>
             </div>
             <hr />
-          </>
+          </div>
         ))}
     </MainScreen>
   );
