@@ -5,18 +5,18 @@ const generateToken = require("../utils/generateToken");
 const registeruser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
-  const userExists = await User.findOne({
-    email: { $regex: email, $options: "i" },
+  const Email = email.toLowerCase();
+  const ifExist = await User.findOne({
+    email: Email,
   });
-
-  if (userExists) {
+  if (ifExist) {
     res.status(400);
-    throw new Error("User already exists");
+    throw new Error("This account is already registered");
   }
 
   const user = await User.create({
     name,
-    email,
+    email: Email,
     password,
     pic,
   });
@@ -58,16 +58,17 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
     if (req.body.email) {
-      const ifExist = await User.findOne({
-        email: { $regex: req.body.email, $options: "i" },
-      });
-      if (ifExist._id.toString() !== req.user._id.toString()) {
-        res.status(404);
-        throw new Error("This email is already registered");
+      const Email = req.body.email.toLowerCase();
+      const ifExist = await User.findOne({ email: Email });
+      if (ifExist) {
+        if (ifExist._id.toString() !== req.user._id.toString()) {
+          res.status(400);
+          throw new Error("This email is already registered");
+        }
       }
     }
     user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
+    user.email = req.body.email.toLowerCase() || user.email;
     user.pic = req.body.pic || user.pic;
 
     if (req.body.password) {
