@@ -5,7 +5,9 @@ const generateToken = require("../utils/generateToken");
 const registeruser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({
+    email: { $regex: email, $options: "i" },
+  });
 
   if (userExists) {
     res.status(400);
@@ -55,6 +57,15 @@ const authUser = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
+    if (req.body.email) {
+      const ifExist = await User.findOne({
+        email: { $regex: req.body.email, $options: "i" },
+      });
+      if (ifExist._id.toString() !== req.user._id.toString()) {
+        res.status(404);
+        throw new Error("This email is already registered");
+      }
+    }
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.pic = req.body.pic || user.pic;
