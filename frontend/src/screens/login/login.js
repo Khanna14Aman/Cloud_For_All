@@ -70,7 +70,7 @@ function Login() {
         <div style={{ position: "absolute", bottom: "2vh" }}>
           <Row>
             <Col>
-              New Customer ? <Link to="/register">Register Here</Link>
+              New User ? <Link to="/register">Register Here</Link>
             </Col>
           </Row>
           <Row>

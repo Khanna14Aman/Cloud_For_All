@@ -7,6 +7,8 @@ const userroutes = require("./routes/userroutes");
 const noteRoutes = require("./routes/noteRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const verifyRoutes = require("./routes/verifyRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 const { errorHandler, notFound } = require("./middleware/errormiddleware");
 
 connectDB();
@@ -20,6 +22,8 @@ app.use("/api/users", userroutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/mycontact", contactRoutes);
 app.use("/api/verify", verifyRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -4,7 +4,8 @@ const nodemailer = require("nodemailer");
 const otp = require("otp-generator");
 
 const verifyotp = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  var { email } = req.body;
+  email = email.toLowerCase();
   console.log(email);
   const UserExist = await User.findOne({ email });
   if (UserExist) {
@@ -43,7 +44,8 @@ const verifyotp = asyncHandler(async (req, res) => {
 });
 
 const verifyotpregister = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  var { email } = req.body;
+  email = email.toLowerCase();
   console.log(email);
   const UserExist = await User.findOne({ email });
   if (!UserExist) {
@@ -82,11 +84,12 @@ const verifyotpregister = asyncHandler(async (req, res) => {
 });
 
 const changePassword = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  var { email, password } = req.body;
   if (!email || !password) {
     res.status(400);
     throw new Error("Provide full data");
   } else {
+    email = email.toLowerCase();
     const UserExist = await User.findOne({ email });
     if (UserExist) {
       UserExist.password = password;

@@ -4,7 +4,7 @@ const generateToken = require("../utils/generateToken");
 
 const registeruser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
-
+  // console.log("here");
   const Email = email.toLowerCase();
   const ifExist = await User.findOne({
     email: Email,
@@ -37,7 +37,8 @@ const registeruser = asyncHandler(async (req, res) => {
 });
 
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  var { email, password } = req.body;
+  email = email.toLowerCase();
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
     res.json({
@@ -89,8 +90,25 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const allUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword)
+    .select("-password")
+    .find({ _id: { $ne: req.user._id } });
+  res.json(users);
+});
+
 module.exports = {
   registeruser,
   authUser,
   updateUserProfile,
+  allUsers,
 };
