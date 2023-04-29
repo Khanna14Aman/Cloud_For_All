@@ -1,7 +1,9 @@
 import React from "react";
+import { Container, Image } from "react-bootstrap";
+import "../../cssfile/notFound.css";
 
 const NotFound = () => {
-  return <div> 404 NotFound</div>;
+  return <Container className="notFound"></Container>;
 };
 
 export default NotFound;

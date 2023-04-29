@@ -1,0 +1,6 @@
+.notFound {
+  height: 90vh;
+  background-image: url("../Images/notFound.avif");
+  background-position: center;
+  background-size: cover;
+}
