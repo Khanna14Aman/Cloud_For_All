@@ -28,7 +28,7 @@ function Header({ setSearch }) {
   useEffect(() => {}, [userInfo]);
 
   return (
-    <Navbar bg="primary" expand="lg">
+    <Navbar bg="primary" expand="lg" style={{ minHeight: "10vh" }}>
       <Container>
         <LinkContainer to="/">
           <Navbar.Brand>Cloud_For_All</Navbar.Brand>

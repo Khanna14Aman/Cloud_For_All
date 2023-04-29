@@ -22,3 +22,11 @@
 .selectuser:hover {
   cursor: pointer;
 }
+
+.arrow:hover {
+  cursor: pointer;
+}
+
+.view:hover {
+  cursor: pointer;
+}
