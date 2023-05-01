@@ -44,20 +44,6 @@ const accessChat = asyncHandler(async (req, res) => {
   }
 });
 
-// fetch all chat I have done to everyone whether is goup or one-to-one chat
-const fetchChats = asyncHandler(async (req, res) => {
-  const results = Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password")
-    .populate("latestMessage")
-    .sort({ updatedAt: -1 });
-  const allChat = await User.populate(results, {
-    path: "latestMessage.sender",
-    select: "name pic email",
-  });
-  res.status(200).json(allChat);
-});
-
 // access chat with developer
 const accessChatDeveloper = asyncHandler(async (req, res) => {
   const userId = process.env.ID;
@@ -100,4 +86,4 @@ const accessChatDeveloper = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { fetchChats, accessChat, accessChatDeveloper };
+module.exports = { accessChat, accessChatDeveloper };
