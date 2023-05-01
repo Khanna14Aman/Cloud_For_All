@@ -1,4 +1,3 @@
-import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import LandingPage from "./screens/LandingPage/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -19,7 +18,7 @@ import Admin from "./screens/AdminPage/Admin";
 
 function App() {
   const [search, setSearch] = useState("");
-  console.log(search);
+  // console.log(search);
 
   return (
     <>
@@ -50,7 +49,6 @@ function App() {
             <Route exact path="/*" element={<NotFound />} />
           </Routes>
         </main>
-        <Footer />
       </BrowserRouter>
     </>
   );

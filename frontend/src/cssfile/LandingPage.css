@@ -3,12 +3,10 @@
   display: flex;
   align-items: center;
   background-image: url("../Images/cloudimg2.avif");
-  /* background-position: center; */
   background-size: cover;
 }
 .title {
-  /* font-weight: bold; */
-  font-size: 10vh;
+  font-size: 7vh;
   color: whitesmoke;
 }
 .subtitle {
@@ -22,27 +20,13 @@
 }
 .buttonContainer {
   margin-top: 10vh;
-  display: flex;
-  justify-content: space-evenly;
 }
 .landingButton {
-  width: 17vw;
-  height: 10vh;
+  width: 100%;
+  height: 8vh;
 }
-@media only screen and (min-width: 1200px) {
-  .buttonContainer {
-    padding: 0 200px;
-  }
-  .title {
-    padding: 0 100px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .title {
-    font-size: 60px;
-  }
-  .landingbutton {
-    width: 150px;
-    height: 50px;
-  }
+.button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 1vh;
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import ErrorMessage from "../Error/Error";
 import Loading from "../Loading/Loading";
 import "../../cssfile/UpdateContact.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateContact } from "../../actions/contactActions";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const UpdateContact = ({
   setedit,
@@ -32,6 +33,9 @@ const UpdateContact = ({
 
   const [showalert, setalert] = useState(false);
   const Alert = () => {
+    const widthMatch = useMediaQuery("(min-width:580px)");
+    const widthMatch2 = useMediaQuery("(max-width:910px)");
+
     // useEffect(() => {
     //   document.body.style.overflowY = "hidden";
     //   return () => (document.body.style.overflowY = "scroll");
@@ -39,40 +43,37 @@ const UpdateContact = ({
     return (
       <>
         <div className="blur-background"></div>
-        <div
+        <Container
           style={{
             zIndex: "37",
             borderRadius: "20px",
-            height: "40%",
-            width: "50%",
+            minHeight: "30%",
+            width:
+              widthMatch && widthMatch2 ? "80%" : widthMatch ? "50%" : "100%",
             backgroundColor: "red",
             position: "fixed",
-            left: "25%",
+            left: widthMatch && widthMatch2 ? "10%" : widthMatch ? "25%" : "0%",
             top: "30%",
             padding: "2vh",
-            textAlign: "center",
             position: "fixed",
           }}
         >
-          <div>
-            <h2>
-              <b>
-                This name is already in use. We cannot perform this Operation.
-              </b>
-            </h2>
-          </div>
-          <div
-            style={{
-              marginTop: "12vh",
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Button style={{ width: "5vw" }} onClick={() => setalert(false)}>
+          <Row>
+            <Col md={1} lg={1} sm={1}></Col>
+            <Col md={10} lg={10} sm={10} style={{ textAlign: "center" }}>
+              <h2>
+                <b>
+                  This name is already in use. We cannot perform this Operation.
+                </b>
+              </h2>
+            </Col>
+          </Row>
+          <Row style={{ display: "flex", justifyContent: "center" }}>
+            <Button style={{ minWidth: "5vw" }} onClick={() => setalert(false)}>
               OK
             </Button>
-          </div>
-        </div>
+          </Row>
+        </Container>
       </>
     );
   };
@@ -108,19 +109,19 @@ const UpdateContact = ({
     <>
       <div className="blur-background"></div>
       {showalert && <Alert />}
-      <div className="update-contact-main">
+      <Container className="update-contact-main">
         {loading && <Loading></Loading>}
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2} lg={2} sm={2}>
                 <Form.Label>
                   <strong>Name:</strong>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="text"
                   placeholder="Enter Name"
@@ -133,13 +134,13 @@ const UpdateContact = ({
           </Form.Group>
           <Form.Group controlId="Country">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2} lg={2} sm={2}>
                 <Form.Label>
                   <strong>Country:</strong>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="text"
                   placeholder="Enter Country Name"
@@ -151,13 +152,13 @@ const UpdateContact = ({
           </Form.Group>
           <Form.Group controlId="State">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2} lg={2} sm={2}>
                 <Form.Label>
                   <strong>State:</strong>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="text"
                   placeholder="Enter State"
@@ -170,13 +171,13 @@ const UpdateContact = ({
 
           <Form.Group controlId="City">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2} lg={2} sm={2}>
                 <Form.Label>
                   <strong>City:</strong>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="text"
                   placeholder="Enter City"
@@ -189,13 +190,13 @@ const UpdateContact = ({
 
           <Form.Group controlId="Designation">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2} lg={2} sm={2}>
                 <Form.Label>
                   <strong>Designation:</strong>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="text"
                   placeholder="Enter Designation"
@@ -206,14 +207,19 @@ const UpdateContact = ({
             </Row>
           </Form.Group>
           <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={9}>
+            <Col md={1} lg={1} sm={1}></Col>
+            <Col
+              md={10}
+              lg={10}
+              sm={10}
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Button type="submit">Update ContactDetails</Button>
+              <Button onClick={() => setedit(false)}>close</Button>
             </Col>
-            <Button onClick={() => setedit(false)}>close</Button>
           </Row>
         </Form>
-      </div>
+      </Container>
     </>
   );
 };

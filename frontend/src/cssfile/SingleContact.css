@@ -4,10 +4,10 @@
   box-shadow: 3px 3px 3px rgb(49, 48, 48);
 }
 .single-contact-comp {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   background-color: rgb(118, 118, 109);
-  height: 10vh;
+  min-height: 10vh;
   align-items: center;
   margin-top: 2vh;
   border-radius: 10px;

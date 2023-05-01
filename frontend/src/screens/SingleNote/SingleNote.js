@@ -7,6 +7,7 @@ import { deleteNoteAction, updateNoteAction } from "../../actions/notesActions";
 import ErrorMessage from "../../components/Error/Error";
 import Loading from "../../components/Loading/Loading";
 import ReactMarkdown from "react-markdown";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
 
 function SingleNote() {
@@ -35,6 +36,8 @@ function SingleNote() {
   const [deleteid, setdeleteid] = useState("");
   const [showDelete, setDelete] = useState(false);
   const DeleteModal = () => {
+    const widthMatch = useMediaQuery("(min-width:500px)");
+
     useEffect(() => {
       document.body.style.overflowY = "hidden";
       return () => (document.body.style.overflowY = "scroll");
@@ -47,10 +50,10 @@ function SingleNote() {
             zIndex: "3",
             borderRadius: "20px",
             height: "30%",
-            width: "40%",
+            width: widthMatch ? "40%" : "100%",
             backgroundColor: "red",
             position: "fixed",
-            left: "30%",
+            left: widthMatch ? "30%" : "0%",
             top: "35%",
             padding: "2vh",
             textAlign: "center",

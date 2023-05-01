@@ -9,7 +9,7 @@ import "../../cssfile/ScrollBar.css";
 import Loading from "../../components/Loading/Loading";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+// import VisibilityIcon from "@mui/icons-material/Visibility";
 import io from "socket.io-client";
 var socket, selectedChatCompare;
 
@@ -266,7 +266,7 @@ const Admin = ({ search }) => {
                         ? selectedChat.users[1].name
                         : selectedChat.users[0].name}
                     </strong>
-                    <VisibilityIcon className="view" />
+                    {/* <VisibilityIcon className="view" /> */}
                   </Container>
                   <Container
                     fluid

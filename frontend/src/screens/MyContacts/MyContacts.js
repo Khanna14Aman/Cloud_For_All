@@ -5,10 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { listContacts, deleteContact } from "../../actions/contactActions";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/Error/Error";
-import { Button } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import "../../cssfile/ContactComp.css";
 import CreateContact from "../../components/CreateContact/CreateContact";
 import UpdateContact from "../../components/UpdateContact/UpdateContact";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const MyContacts = ({ search }) => {
   const navigate = useNavigate();
@@ -88,6 +89,8 @@ const MyContacts = ({ search }) => {
   const [deleteid, setdeleteid] = useState("");
   const [showDelete, setDelete] = useState(false);
   const DeleteModal = () => {
+    const widthMatch = useMediaQuery("(min-width:570px)");
+    const widthMatch2 = useMediaQuery("(max-width:800px)");
     useEffect(() => {
       document.body.style.overflowY = "hidden";
       return () => (document.body.style.overflowY = "scroll");
@@ -95,44 +98,49 @@ const MyContacts = ({ search }) => {
     return (
       <>
         <div className="blur-background"></div>
-        <div
+        <Container
           style={{
             zIndex: "3",
             borderRadius: "20px",
-            height: "30%",
-            width: "40%",
+            minHeight: "30%",
+            width:
+              widthMatch2 && widthMatch ? "80%" : widthMatch ? "40%" : "100%",
             backgroundColor: "red",
             position: "fixed",
-            left: "30%",
+            left: widthMatch2 && widthMatch ? "10%" : widthMatch ? "30%" : "0%",
             top: "35%",
             padding: "2vh",
-            textAlign: "center",
             position: "fixed",
           }}
         >
-          <div>
-            <h2>
-              <b>Are You Sure to Delete this number.</b>
-            </h2>
-          </div>
-          <div
-            style={{
-              marginTop: "12vh",
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Button
-              onClick={() => {
-                dispatch(deleteContact(deleteid));
-                setDelete(false);
-              }}
+          <Row>
+            <Col lg={1} md={1} sm={1}></Col>
+            <Col lg={10} md={10} sm={10} style={{ textAlign: "center" }}>
+              <h2>
+                <b>Are You Sure to Delete this number.</b>
+              </h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={1} lg={1} md={1}></Col>
+            <Col
+              sm={10}
+              lg={10}
+              md={10}
+              style={{ display: "flex", justifyContent: "space-between" }}
             >
-              Delete
-            </Button>
-            <Button onClick={() => setDelete(false)}>Close</Button>
-          </div>
-        </div>
+              <Button
+                onClick={() => {
+                  dispatch(deleteContact(deleteid));
+                  setDelete(false);
+                }}
+              >
+                Delete
+              </Button>
+              <Button onClick={() => setDelete(false)}>Close</Button>
+            </Col>
+          </Row>
+        </Container>
       </>
     );
   };
@@ -181,14 +189,14 @@ const MyContacts = ({ search }) => {
               value.name.toLowerCase().includes(search.toLowerCase())
             )
             .map((value) => (
-              <div key={value._id}>
-                <div className="contact-comp-main" key={value._id}>
-                  <div>
-                    <span style={{ marginLeft: "2vw", fontSize: "5vh" }}>
+              <Container key={value._id}>
+                <Row className="contact-comp-main" key={value._id}>
+                  <Col md={7} lg={9} sm={12}>
+                    <span style={{ marginLeft: "1vw", fontSize: "5vh" }}>
                       <strong>{value.name}</strong>
                     </span>
-                  </div>
-                  <div style={{ marginRight: "2vw" }}>
+                  </Col>
+                  <Col>
                     <Button
                       style={{ marginLeft: "2vw" }}
                       onClick={() => {
@@ -210,7 +218,7 @@ const MyContacts = ({ search }) => {
                     </Button>
                     <Button
                       variant="danger"
-                      style={{ marginLeft: "2vw" }}
+                      style={{ marginLeft: "1vw" }}
                       onClick={() => {
                         // deleteHandler(value._id);
                         setdeleteid(value._id);
@@ -220,12 +228,12 @@ const MyContacts = ({ search }) => {
                       Delete
                     </Button>
                     <Link to={`/mycontact/${value._id}`}>
-                      <Button style={{ marginLeft: "2vw" }}>Open</Button>
+                      <Button style={{ marginLeft: "1vw" }}>Open</Button>
                     </Link>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 <hr />
-              </div>
+              </Container>
             ))}
       </MainScreen>
     </>

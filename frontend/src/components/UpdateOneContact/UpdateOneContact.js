@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import "../../cssfile/UpdateOneContact.css";
 import { updateOneContact } from "../../actions/contactActions";
@@ -23,17 +23,17 @@ const UpdateOneContact = ({ setedit, id, contactId, number }) => {
   return (
     <>
       <div className="blur-background"></div>
-      <div className="update-one-contact">
+      <Container className="update-one-contact">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="Phonenumber">
             <Row style={{ marginTop: "2vh" }}>
-              <Col md={1}></Col>
-              <Col md={2}>
+              <Col md={1} lg={1} sm={1}></Col>
+              <Col md={2.5} lg={2.5} sm={2.5}>
                 <Form.Label>
                   <h1>Phone:</h1>
                 </Form.Label>
               </Col>
-              <Col md={8}>
+              <Col md={8} lg={8} sm={8}>
                 <Form.Control
                   type="tel"
                   placeholder="Enter 10 digit number"
@@ -46,14 +46,19 @@ const UpdateOneContact = ({ setedit, id, contactId, number }) => {
             </Row>
           </Form.Group>
           <Row style={{ marginTop: "2vh" }}>
-            <Col md={1}></Col>
-            <Col md={8}>
+            <Col md={1} lg={1} sm={1}></Col>
+            <Col
+              md={10}
+              lg={10}
+              sm={10}
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Button type="submit">Update Contact</Button>
+              <Button onClick={() => setedit(false)}>close</Button>
             </Col>
-            <Button onClick={() => setedit(false)}>close</Button>
           </Row>
         </Form>
-      </div>
+      </Container>
     </>
   );
 };

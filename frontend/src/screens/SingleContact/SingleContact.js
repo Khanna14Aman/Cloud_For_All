@@ -7,9 +7,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneContact, getoneContact } from "../../actions/contactActions";
 import ErrorMessage from "../../components/Error/Error";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import UpdateOneContact from "../../components/UpdateOneContact/UpdateOneContact";
 import AddOneNumber from "../../components/AddOneNumber/AddOneNumber";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SingleContact = () => {
   const ID = useParams();
@@ -64,6 +65,9 @@ const SingleContact = () => {
   const [deleteid, setdeleteid] = useState("");
   const [showDelete, setDelete] = useState(false);
   const DeleteModal = () => {
+    const widthMatch = useMediaQuery("(min-width:570px)");
+    const widthMatch2 = useMediaQuery("(max-width:800px)");
+
     useEffect(() => {
       document.body.style.overflowY = "hidden";
       return () => (document.body.style.overflowY = "scroll");
@@ -71,44 +75,49 @@ const SingleContact = () => {
     return (
       <>
         <div className="blur-background"></div>
-        <div
+        <Container
           style={{
             zIndex: "3",
             borderRadius: "20px",
-            height: "30%",
-            width: "40%",
+            minHeight: "30%",
+            width:
+              widthMatch2 && widthMatch ? "80%" : widthMatch ? "40%" : "100%",
             backgroundColor: "red",
             position: "fixed",
-            left: "30%",
+            left: widthMatch2 && widthMatch ? "10%" : widthMatch ? "30%" : "0%",
             top: "35%",
             padding: "2vh",
-            textAlign: "center",
             position: "fixed",
           }}
         >
-          <div>
-            <h2>
-              <b>Are You Sure to Delete this number.</b>
-            </h2>
-          </div>
-          <div
-            style={{
-              marginTop: "12vh",
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Button
-              onClick={() => {
-                dispatch(deleteOneContact(ID.id, deleteid));
-                setDelete(false);
-              }}
+          <Row>
+            <Col sm={1} lg={1} md={1}></Col>
+            <Col sm={10} lg={10} md={10} style={{ textAlign: "center" }}>
+              <h2>
+                <b>Are You Sure to Delete this number.</b>
+              </h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={1} lg={1} md={1}></Col>
+            <Col
+              sm={10}
+              lg={10}
+              md={10}
+              style={{ display: "flex", justifyContent: "space-between" }}
             >
-              Delete
-            </Button>
-            <Button onClick={() => setDelete(false)}>Close</Button>
-          </div>
-        </div>
+              <Button
+                onClick={() => {
+                  dispatch(deleteOneContact(ID.id, deleteid));
+                  setDelete(false);
+                }}
+              >
+                Delete
+              </Button>
+              <Button onClick={() => setDelete(false)}>Close</Button>
+            </Col>
+          </Row>
+        </Container>
       </>
     );
   };
@@ -149,10 +158,10 @@ const SingleContact = () => {
       {errorUpdateOne && (
         <ErrorMessage variant="danger">{errorUpdateOne}</ErrorMessage>
       )}
-      <div className="single-contact-head">
+      <Container className="single-contact-head">
         <Row>
-          <Col md={1}></Col>
-          <Col md={3}>
+          <Col md={1} lg={1}></Col>
+          <Col md={3} lg={3}>
             <h1>
               <b>Name:</b>
             </h1>
@@ -162,8 +171,8 @@ const SingleContact = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={1}></Col>
-          <Col md={3}>
+          <Col md={1} lg={1}></Col>
+          <Col md={3} lg={3}>
             <h1>
               <b>Designation:</b>
             </h1>
@@ -173,8 +182,8 @@ const SingleContact = () => {
           </Col>
         </Row>{" "}
         <Row>
-          <Col md={1}></Col>
-          <Col md={3}>
+          <Col md={1} lg={1}></Col>
+          <Col md={3} lg={3}>
             <h1>
               <b>Country:</b>
             </h1>
@@ -184,8 +193,8 @@ const SingleContact = () => {
           </Col>
         </Row>{" "}
         <Row>
-          <Col md={1}></Col>
-          <Col md={3}>
+          <Col md={1} lg={1}></Col>
+          <Col md={3} lg={3}>
             <h1>
               <b>State:</b>
             </h1>
@@ -195,8 +204,8 @@ const SingleContact = () => {
           </Col>
         </Row>{" "}
         <Row>
-          <Col md={1}></Col>
-          <Col md={3}>
+          <Col md={1} lg={1}></Col>
+          <Col md={3} lg={3}>
             <h1>
               <b>City:</b>
             </h1>
@@ -205,7 +214,7 @@ const SingleContact = () => {
             <h1>{oneContact && oneContact.city}</h1>
           </Col>
         </Row>
-      </div>
+      </Container>
       <Button
         style={{ marginTop: "1vh" }}
         onClick={() => {
@@ -217,15 +226,15 @@ const SingleContact = () => {
       </Button>
       {oneContact &&
         oneContact.phonenumber.map((value) => (
-          <div key={value._id}>
-            <div className="single-contact-comp">
-              <div style={{ display: "flex" }}>
+          <Container key={value._id}>
+            <Row className="single-contact-comp">
+              <Col md={8} lg={9} sm={12} style={{ display: "flex" }}>
                 <span style={{ marginLeft: "2vw", fontSize: "5vh" }}>
                   <strong>{value.number}</strong>
                 </span>
                 <CopySvg number={value.number} />
-              </div>
-              <div style={{ marginRight: "2vw" }}>
+              </Col>
+              <Col style={{ marginRight: "2vw" }}>
                 <Button
                   style={{ marginLeft: "2vw" }}
                   onClick={() => {
@@ -254,10 +263,10 @@ const SingleContact = () => {
                 >
                   Delete
                 </Button>
-              </div>
-            </div>
+              </Col>
+            </Row>
             <hr />
-          </div>
+          </Container>
         ))}
     </MainScreen>
   );

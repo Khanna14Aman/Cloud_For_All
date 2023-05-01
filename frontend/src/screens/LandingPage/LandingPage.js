@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import "../../cssfile/LandingPage.css";
@@ -17,25 +17,37 @@ const LandingPage = () => {
 
   return (
     <div className="main">
-      <Container>
+      <Container fluid>
         <Row>
           <div className="intro-text">
             <div>
-              <h1 className="title">Welcome to Cloud_For_All</h1>
+              <p className="title">Welcome to Cloud_For_All</p>
               <p className="subtitle">Keep your all data safe here.</p>
             </div>
-            <div className="buttonContainer">
-              <Link to="/login">
-                <Button size="lg" className="landingButton">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button size="lg" className="landingButton">
-                  SignUp
-                </Button>
-              </Link>
-            </div>
+            <Container fluid className="buttonContainer">
+              <Row className="button-row">
+                <Col md={6} lg={6} sm={6}>
+                  <Link to="/login">
+                    <Button variant="dark" size="lg" className="landingButton">
+                      Login
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+              <Row className="button-row">
+                <Col md={6} lg={6} sm={6}>
+                  <Link to="/register">
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className="landingButton"
+                    >
+                      SignUp
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </Container>
           </div>
         </Row>
       </Container>

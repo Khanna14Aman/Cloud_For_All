@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteNoteAction, listNotes } from "../../actions/notesActions";
 import ErrorMessage from "../../components/Error/Error";
 import Loading from "../../components/Loading/Loading";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link, useNavigate } from "react-router-dom";
 
 function MyNotes({ search }) {
@@ -41,6 +42,8 @@ function MyNotes({ search }) {
   const [deleteid, setdeleteid] = useState("");
   const [showDelete, setDelete] = useState(false);
   const DeleteModal = () => {
+    const widthMatch = useMediaQuery("(min-width:500px)");
+
     useEffect(() => {
       document.body.style.overflowY = "hidden";
       return () => (document.body.style.overflowY = "scroll");
@@ -53,10 +56,10 @@ function MyNotes({ search }) {
             zIndex: "3",
             borderRadius: "20px",
             height: "30%",
-            width: "40%",
+            width: widthMatch ? "40%" : "100%",
             backgroundColor: "red",
             position: "fixed",
-            left: "30%",
+            left: widthMatch ? "30%" : "0%",
             top: "35%",
             padding: "2vh",
             textAlign: "center",
@@ -147,7 +150,7 @@ function MyNotes({ search }) {
                     {/* </contextAwareToogle> */}
                   </span>
                   <div>
-                    <Button>
+                    <Button className="mx-2">
                       {" "}
                       <Link
                         to={`/note/${note._id}`}

@@ -3,8 +3,21 @@
   position: fixed;
   background-color: red;
   z-index: 3;
-  height: 30%;
-  margin-left: 19%;
+  min-height: 30%;
+  left: 25%;
   padding-top: 4vh;
   border-radius: 20px;
+}
+@media only screen and (max-width: 580px) {
+  .update-one-contact {
+    width: 100%;
+    left: 0;
+  }
+}
+
+@media only screen and (min-width: 580px) and (max-width: 1020px) {
+  .update-one-contact {
+    width: 90%;
+    left: 5%;
+  }
 }

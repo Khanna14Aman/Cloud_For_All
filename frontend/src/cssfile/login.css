@@ -1,12 +1,11 @@
 .loginContainer {
   padding: 10px;
   position: relative;
-  left: 35%;
-  margin-top: 2%;
-  /* top: 25vh; */
+  left: 25%;
+  margin-top: 2vh;
   border-radius: 20px;
   background-color: gray;
-  width: 30%;
+  width: 50%;
   height: 60vh;
   box-shadow: 3px 3px 3px rgb(49, 48, 48);
   animation-name: login-slider;
@@ -15,9 +14,35 @@
 }
 @keyframes login-slider {
   0% {
-    left: 0%;
+    left: -100%;
   }
   100% {
-    left: 35%;
+    left: 25%;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .loginContainer {
+    width: 100%;
+    left: 0%;
+    animation: none;
+  }
+}
+@media only screen and (max-width: 800px) and (min-width: 351px) {
+  .loginContainer {
+    width: 80%;
+    left: 10%;
+    animation-name: login-slider2;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes login-slider2 {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 10%;
   }
 }

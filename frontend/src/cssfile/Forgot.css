@@ -6,10 +6,9 @@
 }
 .forgot-outer-div1 {
   position: relative;
-  left: 35%;
-  width: 30vw;
-  margin-top: 5px;
-  /* top: 22vh; */
+  left: 25%;
+  width: 50%;
+  margin-top: 2vh;
   border-radius: 20px;
   padding: 10px;
   box-shadow: 3px 3px 3px rgb(49, 48, 48);
@@ -20,9 +19,36 @@
 }
 @keyframes forgot-slider {
   0% {
-    left: 100vw;
+    width: 0%;
   }
   100% {
-    left: 35%;
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 800px) and (min-width: 350px) {
+  .forgot-outer-div1 {
+    left: 10%;
+    width: 80%;
+    animation-name: forgot-slider2;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes forgot-slider2 {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 349px) {
+  .forgot-outer-div1 {
+    width: 100%;
+    left: 0%;
+    animation: none;
   }
 }
