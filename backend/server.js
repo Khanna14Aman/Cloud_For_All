@@ -22,8 +22,8 @@ app.use("/api/users", userroutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/mycontact", contactRoutes);
 app.use("/api/verify", verifyRoutes);
-app.use("/api/chat", chatRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/chat", chatRoutes);
+app.use("/message", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
@@ -54,7 +54,6 @@ io.on("connection", (socket) => {
 
   socket.on("new message", (newMessageRecieved) => {
     var chat = newMessageRecieved.chat;
-    console.log(chat);
     if (!chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {

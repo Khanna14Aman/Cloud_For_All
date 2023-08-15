@@ -40,14 +40,9 @@ function Header({ setSearch }) {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            {userInfo && !userInfo.isAdmin && (
-              <Link to="/contactowner">
-                <Navbar.Brand>Chat_Help</Navbar.Brand>
-              </Link>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <Link to="/admin">
-                <Navbar.Brand>User_Messages</Navbar.Brand>
+            {userInfo && (
+              <Link to="/chat">
+                <Navbar.Brand>Chat_Area</Navbar.Brand>
               </Link>
             )}
             {userInfo && (

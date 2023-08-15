@@ -9,24 +9,28 @@ import "../../cssfile/ScrollBar.css";
 import Loading from "../../components/Loading/Loading";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import VisibilityIcon from "@mui/icons-material/Visibility";
 import io from "socket.io-client";
 var socket, selectedChatCompare;
 
-const Admin = ({ search }) => {
+const Chat = ({ search }) => {
+  const [doSort, setDoSort] = useState(true);
+
   const widthMatch = useMediaQuery("(min-width:768px)");
   const navigate = useNavigate();
   const [socketConnected, setSocketConnected] = useState(false);
-  // see if Admin login or not
+
+  // Is user LoggedIn?
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   useEffect(() => {
-    if (!userInfo || !userInfo.isAdmin) {
+    if (!userInfo) {
       navigate("/");
     }
   }, [userInfo, navigate]);
 
   // For fetching all users
+
   const [AllUser, setAllUser] = useState([]);
   const [error, setError] = useState(false);
   const GetAllUser = async () => {
@@ -37,10 +41,23 @@ const Admin = ({ search }) => {
         },
       };
 
-      const { data } = await axios.get(`/api/users/getalluser?search=`, config);
-      // console.log(data);
+      var { data } = await axios.get(`api/users/getalluser?search=`, config);
       setAllUser(data);
-      setError(false);
+      setAllUser((AllUser) =>
+        AllUser.sort(function (a, b) {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1;
+          }
+          if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1;
+          }
+          if (a.name.toLowerCase() === b.name.toLowerCase()) {
+            return 0;
+          }
+          return 0;
+        })
+      );
+      setDoSort(!doSort);
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -49,7 +66,73 @@ const Admin = ({ search }) => {
     GetAllUser();
   }, []);
 
+  // sorting user according to ascesding order of chat with them
+  const [view, setView] = useState({});
+  const selectUser = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      var { data } = await axios.get("/chat", config);
+      const arr = Array();
+      for (var value of data) {
+        for (var val of value.users) {
+          if (val._id !== userInfo._id) {
+            arr.push(val);
+          }
+        }
+      }
+      var v = {};
+      for (var value of data) {
+        var key;
+        var valu;
+        for (var val of value.pendingView) {
+          if (val.user.toString() !== userInfo._id.toString()) {
+            key = val.user.toString();
+          } else {
+            valu = val.value;
+          }
+        }
+        if (valu > 0) {
+          v[key] = valu;
+        }
+      }
+      setView(v);
+      var allIds = Array();
+      for (var value of arr) {
+        allIds.push(value._id.toString());
+      }
+      var rest = Array();
+      rest = AllUser.filter((value) => {
+        return !allIds.includes(value._id.toString());
+      });
+
+      var UserOrder = Array();
+      for (var value of arr) {
+        UserOrder.push(value);
+      }
+      for (var value of rest) {
+        UserOrder.push(value);
+      }
+
+      setAllUser(UserOrder);
+      setError(false);
+    } catch (error) {
+      console.log(error);
+      window.alert(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (AllUser.length > 0) {
+      selectUser();
+    }
+  }, [doSort]);
+
   // for sending message..
+
   const [messagevalue, setmessagevalue] = useState("");
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -67,13 +150,14 @@ const Admin = ({ search }) => {
         },
       };
       const { data } = await axios.post(
-        "/api/message",
+        "/message",
         { chatId, content },
         config
       );
       socket.emit("new message", data);
       setAllMessage([...allmessage, data]);
-      // console.log(data);
+      // getallmessage(chatId);
+      setDoSort(!doSort);
     } catch (error) {
       window.alert(error.response.data.message);
     }
@@ -92,8 +176,7 @@ const Admin = ({ search }) => {
         },
       };
 
-      const { data } = await axios.get(`/api/message/${chatId}`, config);
-      // console.log(data);
+      const { data } = await axios.get(`/message/${chatId}`, config);
       setLoading(false);
       setAllMessage(data);
       socket.emit("join chat", selectedChat._id);
@@ -103,6 +186,7 @@ const Admin = ({ search }) => {
   };
 
   // for accessing or creating first time chat with particular user;
+
   const [selectedChat, setSelectChat] = useState();
   const AccessChat = async (userId) => {
     setLoading(true);
@@ -114,11 +198,8 @@ const Admin = ({ search }) => {
         },
       };
 
-      const { data } = await axios.post("/api/chat", { userId }, config);
-      // console.log(data._id);
+      const { data } = await axios.post("/chat", { userId }, config);
       setSelectChat(data);
-      // getallmessage(data._id);
-      // selectedChatCompare = data;
     } catch (error) {
       window.alert(error.response.data.message);
     }
@@ -135,35 +216,52 @@ const Admin = ({ search }) => {
   const bottomRef = useRef(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "auto" });
+    if (selectedChat) {
+      setZero(selectedChat._id);
+    }
   }, [allmessage]);
+
+  // connecting socket to backend
 
   useEffect(() => {
     socket = io("http://localhost:8000");
     socket.emit("setup", userInfo);
     socket.on("connected", () => setSocketConnected(true));
-    // socket.on("typing", () => setIsTyping(true));
-    // socket.on("stop typing", () => setIsTyping(false));
-
-    // eslint-disable-next-line
   }, []);
+
+  // set pending views to zero for particular chat id.
+
+  const setZero = async (chatId) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.put("/chat/setZero", { chatId }, config);
+      console.log("done");
+
+      // when we see message and set pending view to 0 now fetch again
+      selectUser();
+    } catch (error) {
+      window.alert(error.response.data.message);
+    }
+  };
+
+  // What to do when user recieved any message from any user.
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
-      console.log("admin");
-      console.log(selectedChatCompare);
-      console.log(newMessageRecieved);
+      setDoSort(!doSort);
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
-        console.log("admin1");
-        // if (!notification.includes(newMessageRecieved)) {
-        //   setNotification([newMessageRecieved, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
+        // nothing
       } else {
-        console.log("admin2");
         setAllMessage([...allmessage, newMessageRecieved]);
+        // getallmessage(newMessageRecieved.chat._id);
       }
     });
   });
@@ -216,7 +314,19 @@ const Admin = ({ search }) => {
                     <Col>
                       <Row md={1} lg={1} sm={1} style={{ paddingTop: "1vh" }}>
                         <Col>
-                          <strong>{value.name}</strong>
+                          <strong>
+                            {value.name}
+                            {view && view[value._id.toString()] && (
+                              <span
+                                style={{
+                                  marginLeft: "1px",
+                                  color: "lightgreen",
+                                }}
+                              >
+                                {view[value._id.toString()]}
+                              </span>
+                            )}
+                          </strong>
                         </Col>
                         <Col>{value.email}</Col>
                       </Row>
@@ -252,6 +362,7 @@ const Admin = ({ search }) => {
                   <Container
                     fluid
                     style={{
+                      backgroundColor: "gainsboro",
                       height: "5vh",
                       display: "flex",
                       justifyContent: "space-between",
@@ -266,7 +377,6 @@ const Admin = ({ search }) => {
                         ? selectedChat.users[1].name
                         : selectedChat.users[0].name}
                     </strong>
-                    {/* <VisibilityIcon className="view" /> */}
                   </Container>
                   <Container
                     fluid
@@ -304,6 +414,7 @@ const Admin = ({ search }) => {
                         >
                           <div
                             style={{
+                              width: "auto",
                               maxWidth: "50%",
                               overflowWrap: "anywhere",
                               color: "black",
@@ -384,4 +495,4 @@ const Admin = ({ search }) => {
   );
 };
 
-export default Admin;
+export default Chat;

@@ -3,9 +3,8 @@ const Message = require("../models/messagemodel");
 const User = require("../models/usermodel");
 const Chat = require("../models/chatmodel");
 
-//@description     Get all Messages
-//@route           GET /api/Message/:chatId
-//@access          Protected
+// getting all message I have with particular user.
+
 const allMessages = asyncHandler(async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.chatId })
@@ -18,9 +17,7 @@ const allMessages = asyncHandler(async (req, res) => {
   }
 });
 
-//@description     Create New Message
-//@route           POST /api/Message/
-//@access          Protected
+// for sending messsage to particular user
 const sendMessage = asyncHandler(async (req, res) => {
   const { content, chatId } = req.body;
 
@@ -45,7 +42,23 @@ const sendMessage = asyncHandler(async (req, res) => {
       select: "name pic email",
     });
 
-    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    await Chat.findByIdAndUpdate(req.body.chatId, {
+      latestMessage: message,
+      lastUpdate: Date.now(),
+    });
+
+    // if sending message then increase the pendingView of person to whom we sent message
+    var updateView = await Chat.findById({ _id: chatId });
+    var previousValue = 0;
+    if (updateView.pendingView[0].user.toString() !== req.user._id.toString()) {
+      previousValue = updateView.pendingView[0].value;
+      updateView.pendingView[0].value = previousValue + 1;
+    } else {
+      previousValue = updateView.pendingView[1].value;
+      updateView.pendingView[1].value = previousValue + 1;
+    }
+
+    await updateView.save();
 
     res.json(message);
   } catch (error) {

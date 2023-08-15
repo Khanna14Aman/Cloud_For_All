@@ -2,14 +2,6 @@ const mongoose = require("mongoose");
 
 const chatSchema = mongoose.Schema(
   {
-    chatName: {
-      type: String,
-      trim: true,
-    },
-    isGroupChat: {
-      type: Boolean,
-      default: false,
-    },
     users: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,10 +12,22 @@ const chatSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
     },
-    groupAdmin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    lastUpdate: {
+      type: Number,
+      default: 0,
     },
+    pendingView: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        value: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
